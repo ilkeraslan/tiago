@@ -13,6 +13,7 @@ from webots_ros.msg import Float64Stamped
 # initialize the node if we want to use
 rospy.init_node('controller', anonymous=True)
 
+global foo
 foo = '/foo'
 
 def callback(res):
@@ -33,8 +34,8 @@ service_set_motor_position_left = rospy.ServiceProxy(foo + "/motor_left/set_posi
 service_set_motor_position_right = rospy.ServiceProxy(foo + "/motor_right/set_position", set_float)
 
 # call set position services with 25 milliseconds sampling rate
-service_set_motor_position_left.call(25)
-service_set_motor_position_right.call(25)
+service_set_motor_position_left.call(100)
+service_set_motor_position_right.call(100)
 
 # call enable position services with 16 milliseconds sampling rate
 service_enable_motor_position_left.call(16)
