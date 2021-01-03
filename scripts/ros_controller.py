@@ -16,33 +16,33 @@ rospy.init_node('controller', anonymous=True)
 foo = '/foo'
 
 def callback(res):
-    rospy.logerr(str(res.data))
+    rospy.logwarn(f'Motor position: {res.data}')
 
-# check for the services
+# check for services
 rospy.wait_for_service(foo + "/motor_left/set_position")
 rospy.wait_for_service(foo + "/motor_right/set_position")
 
 rospy.wait_for_service(foo + "/motor_left_position/enable")
 rospy.wait_for_service(foo + "/motor_right_position/enable")
 
+# create services
+service_enable_motor_position_left = rospy.ServiceProxy(foo + "/motor_left_position/enable", set_int)
+service_enable_motor_position_right = rospy.ServiceProxy(foo + "/motor_right_position/enable", set_int)
 
-# create the service
-motor_service_left = rospy.ServiceProxy(foo + "/motor_left/set_position", set_float)
-motor_service_right = rospy.ServiceProxy(foo + "/motor_right/set_position", set_float)
+service_set_motor_position_left = rospy.ServiceProxy(foo + "/motor_left/set_position", set_float)
+service_set_motor_position_right = rospy.ServiceProxy(foo + "/motor_right/set_position", set_float)
 
-motor_aaa_right = rospy.ServiceProxy(foo + "/motor_right_position/enable", set_int)
-motor_bbb_right = rospy.ServiceProxy(foo + "/motor_left_position/enable", set_int)
+# call set position services with 25 milliseconds sampling rate
+service_set_motor_position_left.call(25)
+service_set_motor_position_right.call(25)
 
-# call the service
-aaa = motor_service_left.call(25)
-bbb = motor_service_right.call(25)
-
-# Each 16 milliseconds is a sampling rate
-ccc = motor_aaa_right.call(16)
-ddd = motor_bbb_right.call(16)
-
+# call enable position services with 16 milliseconds sampling rate
+service_enable_motor_position_left.call(16)
+service_enable_motor_position_right.call(16)
 
 # pub = rospy.Publisher('motor', Float64, queue_size=10)
-ff = rospy.Subscriber(foo + "/motor_left_position/value", Float64Stamped, callback)
+# Subscribe to motor position values
+motor_left_position = rospy.Subscriber(foo + "/motor_left_position/value", Float64Stamped, callback)
+motor_right_position = rospy.Subscriber(foo + "/motor_right_position/value", Float64Stamped, callback)
 
 rospy.spin()
