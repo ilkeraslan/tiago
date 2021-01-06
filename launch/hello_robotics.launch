@@ -14,5 +14,17 @@
   <env name="PYTHONPATH" value="$(env PYTHONPATH):$(env WEBOTS_HOME)/lib/controller/python38" if="$(eval '1' if env('ROS_DISTRO') == 'noetic' else '0')" />
   <node name="ros_controller" pkg="hello_robotics" type="ros_controller.py" required="$(arg auto_close)"/>
   <node name="listener" pkg="hello_robotics" type="listener.py" output="screen"/>
-  <node name="talker" pkg="hello_robotics" type="talker.py" output="screen"/>
+  <!-- <node name="talker" pkg="hello_robotics" type="talker.py" output="screen"/> -->
+  
+  <!-- <node name="tracker" pkg="hello_robotics" type="tracker.py" output="screen"/> -->
+  <node name="my_pose" pkg="hello_robotics" type="my_pose.py" output="screen"/>
+
+    <!-- Axes -->
+  <param name="scale_linear" value="2" type="double"/>
+  <param name="scale_angular" value="2" type="double"/>
+
+  <!-- <node name="my_broadcaster" pkg="hello_robotics" type="turtle_tf2_broadcaster.py" respawn="false" output="screen" >
+    <param name="turtle" type="string" value="foo" />
+  </node> -->
+  <!-- <node name="turtle_pointer" pkg="hello_robotics" type="turtle_tf2_listener.py" respawn="false" output="screen" ></node> -->
 </launch>

@@ -8,10 +8,12 @@ project(hello_robotics)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
+  geometry_msgs
   roscpp
   rospy
   std_msgs
   message_generation
+  tf
 )
 
 ## System dependencies are found with CMake's conventions
@@ -158,9 +160,11 @@ catkin_package(
 
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
-##catkin_install_python(PROGRAMS scripts/add_two_ints_server.py scripts/add_two_ints_client.py
-##  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-##)
+install(PROGRAMS
+  nodes/turtle_tf2_broadcaster.py
+  nodes/turtle_tf2_listener.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
 
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
