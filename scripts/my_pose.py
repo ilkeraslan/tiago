@@ -67,7 +67,7 @@ if __name__ == '__main__':
         pose_subscriber = rospy.Subscriber(position_topic, Pose, poseCallback) 
 
         time.sleep(2)
-        move (1.0, 5000.0)
+        move (5.0, 500.0)
         time.sleep(2)
 
         rospy.spin()
