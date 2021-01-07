@@ -22,41 +22,41 @@ def poseCallback(pose_message):
     yaw = pose_message.theta
 
 def move(speed, distance):
-        #declare a Twist message to send velocity commands
-            velocity_message = Twist()
-            #get current location 
-            x0=x
-            y0=y
-            #z0=z;
-            #yaw0=yaw;
-            velocity_message.linear.x =speed
-            distance_moved = 0.0
-            loop_rate = rospy.Rate(10) # we publish the velocity at 10 Hz (10 times a second)    
-            cmd_vel_topic='/cmd_vel'
-            velocity_publisher = rospy.Publisher(cmd_vel_topic, Twist, queue_size=10)
+    #declare a Twist message to send velocity commands
+    velocity_message = Twist()
 
-            while True :
-                    rospy.loginfo("Turtlesim moves forwards")
-                    velocity_publisher.publish(velocity_message)
+    #get current location 
+    x0=x
+    y0=y
+    #z0=z;
+    #yaw0=yaw;
 
-                    loop_rate.sleep()
-                    
-                    #rospy.Duration(1.0)
-                    
-                    distance_moved = distance_moved+abs(0.5 * math.sqrt(((x-x0) ** 2) + ((y-y0) ** 2)))
-                    if  not (distance_moved<distance):
-                        rospy.loginfo("reached")
-                        break
-            
-            #finally, stop the robot when the distance is moved
-            velocity_message.linear.x =0
+    velocity_message.linear.x = speed
+    distance_moved = 0.0
+    loop_rate = rospy.Rate(10) # we publish the velocity at 10 Hz (10 times a second)    
+    cmd_vel_topic='/cmd_vel'
+    velocity_publisher = rospy.Publisher(cmd_vel_topic, Twist, queue_size=10)
+
+    while True :
+            rospy.loginfo("Moving forwards")
             velocity_publisher.publish(velocity_message)
-    
 
+            loop_rate.sleep()
+            
+            #rospy.Duration(1.0)
+            
+            distance_moved = distance_moved+abs(0.5 * math.sqrt(((x-x0) ** 2) + ((y-y0) ** 2)))
+            if (distance_moved >= distance):
+                rospy.loginfo("reached")
+                break
+    
+    #finally, stop the robot when the distance is moved
+    velocity_message.linear.x =0
+    velocity_publisher.publish(velocity_message)
+    
 
 if __name__ == '__main__':
     try:
-        
         rospy.init_node('my_motion_pose', anonymous=True)
 
         #declare velocity publisher
@@ -67,12 +67,9 @@ if __name__ == '__main__':
         pose_subscriber = rospy.Subscriber(position_topic, Pose, poseCallback) 
 
         time.sleep(2)
-        move (2.0, 30.0)
+        move (1.0, 5000.0)
         time.sleep(2)
 
-        rospy.wait_for_service('reset')
-        reset_turtle = rospy.ServiceProxy('reset', Empty)
-        reset_turtle()
         rospy.spin()
        
     except rospy.ROSInterruptException:
