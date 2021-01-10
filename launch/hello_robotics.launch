@@ -26,14 +26,18 @@
   <param name="scale_linear" value="2" type="double"/>
   <param name="scale_angular" value="2" type="double"/>
 
-  <!-- <node name="my_broadcaster" pkg="hello_robotics" type="turtle_tf2_broadcaster.py" respawn="false" output="screen" ></node> -->
-  <!-- <node name="my_listener" pkg="hello_robotics" type="turtle_tf2_listener.py" respawn="false" output="screen" ></node> -->
+  <node name="my_broadcaster" pkg="hello_robotics" type="tf2_broadcaster.py" respawn="false" output="screen">
+    <param name="robot_name" value="/$(arg robot_name)" />
+  </node>
+  <node name="my_listener" pkg="hello_robotics" type="tf2_listener.py" respawn="false" output="screen">
+    <param name="robot_name" value="/$(arg robot_name)" />
+  </node>
 
   <!-- <node name="rviz" pkg="hello_robotics" type="rviz"></node> -->
 
-  <node pkg="hello_robotics" name="assignment2_task1" type="example.py" output="screen">
+  <!-- <node pkg="hello_robotics" name="assignment2_task1" type="example.py" output="screen">
     <param name="robot_name" value="/$(arg robot_name)" />
-  </node>
+  </node> -->
 
   <node name="scanners" pkg="hello_robotics" type="scanners.py" output="screen"/>
 

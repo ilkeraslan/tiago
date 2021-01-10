@@ -12,8 +12,10 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
-  message_generation
-  tf
+  tf2
+  tf2_ros
+  tf2_geometry_msgs
+  turtlesim
 )
 
 ## System dependencies are found with CMake's conventions
@@ -106,7 +108,7 @@ generate_messages(
 catkin_package(
  ##INCLUDE_DIRS include
  LIBRARIES hello_robotics
- CATKIN_DEPENDS roscpp rospy std_msgs message_runtime
+ CATKIN_DEPENDS roscpp rospy std_msgs message_runtime geometry_msgs tf2 tf2_ros
  ##DEPENDS system_lib
 )
 
@@ -161,8 +163,8 @@ catkin_package(
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
 install(PROGRAMS
-  nodes/turtle_tf2_broadcaster.py
-  nodes/turtle_tf2_listener.py
+  nodes/tf2_broadcaster.py
+  nodes/tf2_listener.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
@@ -181,11 +183,9 @@ install(PROGRAMS
 # )
 
 ## Mark cpp header files for installation
-# install(DIRECTORY include/${PROJECT_NAME}/
-#   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-#   FILES_MATCHING PATTERN "*.h"
-#   PATTERN ".svn" EXCLUDE
-# )
+install(DIRECTORY rviz
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
 # install(FILES
