@@ -1,39 +1,47 @@
-#!/usr/bin/env python  
-import rospy
+#!/usr/bin/env python
 
 import math
+
+import rospy
 import tf2_ros
-import geometry_msgs.msg
-import turtlesim.srv
+from std_msgs.msg import Time
+from geometry_msgs.msg import TransformStamped
+
+tfBuffer = None
+tfln = None
+sensor_name = "prox_horizontal_0"
+target_name = "target"
+
+def callback_target_found(msg_in):
+	# We recieved a "found" timestamp
+	# attempt to find the transformation
+	try:
+		t = tfBuffer.lookup_transform(sensor_name, target_name, msg_in.data, rospy.Duration(0.5))
+
+		# Dump information to screen
+		rospy.loginfo("Found target at the following location in the world:")
+		rospy.loginfo("[x: %0.2f; y: %0.2f; z: %0.2f]" % (t.transform.translation.x,
+														  t.transform.translation.y,
+														  t.transform.translation.z))
+	except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException) as e:
+		rospy.logwarn(e)
 
 if __name__ == '__main__':
-    rospy.init_node('my_broadcast_listener')
+	rospy.init_node('tf2_listener')
 
-    # Create a TransformListener object to receive tf2 transformations
-    tfBuffer = tf2_ros.Buffer()
-    listener = tf2_ros.TransformListener(tfBuffer)
+	# Setup timestamp subscriber for "target found" at a specific timestamp
+	sub_found = rospy.Subscriber('/emulated_uav/target_found', Time, callback_target_found)
 
-    rospy.wait_for_service('spawn')
-    spawner = rospy.ServiceProxy('spawn', turtlesim.srv.Spawn)
-    turtle_name = rospy.get_param('turtle', 'turtle2')
-    spawner(4, 2, 0, turtle_name)
+	# Create a listener
+	# This catches all messages sent using TF2
+	tfBuffer = tf2_ros.Buffer()
+	tfln = tf2_ros.TransformListener(tfBuffer)
 
-    turtle_vel = rospy.Publisher('%s/cmd_vel' % turtle_name, geometry_msgs.msg.Twist, queue_size=1)
+	rospy.loginfo("tf2_listener running.")
 
-    rate = rospy.Rate(10.0)
-    while not rospy.is_shutdown():
-        try:
-            # Transform from turtle_name frame to turtle1 frame getting the latest available transform
-            trans = tfBuffer.lookup_transform(turtle_name, 'turtle1', rospy.Time())
-        except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException):
-            rate.sleep()
-            continue
-
-        msg = geometry_msgs.msg.Twist()
-
-        msg.angular.z = 4 * math.atan2(trans.transform.translation.y, trans.transform.translation.x)
-        msg.linear.x = 0.5 * math.sqrt(trans.transform.translation.x ** 2 + trans.transform.translation.y ** 2)
-
-        turtle_vel.publish(msg)
-
-        rate.sleep()
+	try:
+		rospy.spin()
+	except rospy.exceptions.ROSInterruptException:
+		sub_found.unregister()
+	finally:
+		rospy.loginfo("tf2_listener shutting down")

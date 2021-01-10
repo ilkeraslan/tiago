@@ -9,36 +9,50 @@ from webots_ros.srv import set_float, get_float, set_int
 from geometry_msgs.msg import TransformStamped
 from sensor_msgs.msg import Range, LaserScan
 
-# Global Variables
 foo = '/foo'
-tfbr = None
-pub_found = None
-publisher = None
-range = 0
-
-sensor_name = "prox_horizontal_0"
-target_name = "target"
+scan_publisher_0 = None
+scan_publisher_1 = None
+scan_publisher_2 = None
+scan_publisher_3 = None
+scan_publisher_4 = None
+scan_publisher_5 = None
+scan_publisher_6 = None
 
 def callback(value):
-    global range
-    range = value.range
-    rospy.logwarn(f'{value.header.frame_id}: {range}')
-    
+    rospy.logwarn(f'{value.header.frame_id}: {value.range}')
     
     scan = LaserScan()
-    scan.header.stamp = rospy.Time.now
+    scan.header.stamp = rospy.Time.now()
     scan.header.frame_id = value.header.frame_id
     scan.angle_min = -1.57
     scan.angle_max = 1.57
     scan.angle_increment = 3.14
     scan.time_increment = (1 / 40) / (100)
-    scan.range_min = 0.0
-    scan.range_max = 100.0
+    scan.range_min = value.min_range
+    scan.range_max = value.max_range
 
-    publisher.publish(scan)
+    scan.ranges = []
+    scan.intensities = []
+    for i in range(0, 100):
+        scan.ranges.append(value.range)
+
+    if value.header.frame_id == 'foo/prox_horizontal_0':
+        scan_publisher_0.publish(scan)
+    elif value.header.frame_id == 'foo/prox_horizontal_1':
+        scan_publisher_1.publish(scan)
+    elif value.header.frame_id == 'foo/prox_horizontal_2':
+        scan_publisher_2.publish(scan)
+    elif value.header.frame_id == 'foo/prox_horizontal_3':
+        scan_publisher_3.publish(scan)
+    elif value.header.frame_id == 'foo/prox_horizontal_4':
+        scan_publisher_4.publish(scan)
+    elif value.header.frame_id == 'foo/prox_horizontal_5':
+        scan_publisher_5.publish(scan)
+    else:
+        scan_publisher_6.publish(scan)
 
 
-def send_tf_target():
+def enable_scanners():
     rospy.wait_for_service(foo + "/prox_horizontal_0/enable")
     rospy.wait_for_service(foo + "/prox_horizontal_1/enable")
     rospy.wait_for_service(foo + "/prox_horizontal_2/enable")
@@ -71,45 +85,19 @@ def send_tf_target():
     rospy.Subscriber(foo + '/prox_horizontal_5/value', Range, callback)
     rospy.Subscriber(foo + '/prox_horizontal_6/value', Range, callback)
 
-    # Generate our "found" timestamp
-    time_found = rospy.Time.now()
-
-    # Create a transform arbitrarily in the
-    # camera frame
-    t = TransformStamped()
-    t.header.stamp = time_found
-    t.header.frame_id = sensor_name
-    t.child_frame_id = target_name
-
-    t.transform.translation.x = -0.4
-    t.transform.translation.y = 0.2
-    t.transform.translation.z = 1.5
-    t.transform.rotation.x = 0.0
-    t.transform.rotation.y = 0.0
-    t.transform.rotation.z = 0.0
-    t.transform.rotation.w = 1.0
-
-    # Send the transformation to TF
-    # and "found" timestamp to localiser
-    tfbr.sendTransform(t)
-    pub_found.publish(time_found)
-
 if __name__ == '__main__':
-    rospy.init_node('tf2_broadcaster_target')
-    rospy.loginfo("tf2_broadcaster_target sending target found...")
+    rospy.init_node('scanners')
 
-    # Setup tf2 broadcaster and timestamp publisher
-    tfbr = tf2_ros.TransformBroadcaster()
-    pub_found = rospy.Publisher('/emulated_uav/target_found', Time, queue_size=10)
-    publisher = rospy.Publisher(foo + '/scan', LaserScan, queue_size=50)
+    scan_publisher_0 = rospy.Publisher(foo + '/scan_0', LaserScan, queue_size=50)
+    scan_publisher_1 = rospy.Publisher(foo + '/scan_1', LaserScan, queue_size=50)
+    scan_publisher_2 = rospy.Publisher(foo + '/scan_2', LaserScan, queue_size=50)
+    scan_publisher_3 = rospy.Publisher(foo + '/scan_3', LaserScan, queue_size=50)
+    scan_publisher_4 = rospy.Publisher(foo + '/scan_4', LaserScan, queue_size=50)
+    scan_publisher_5 = rospy.Publisher(foo + '/scan_5', LaserScan, queue_size=50)
+    scan_publisher_6 = rospy.Publisher(foo + '/scan_6', LaserScan, queue_size=50)
 
-    # Give the nodes a few seconds to configure
     rospy.sleep(rospy.Duration(2))
 
-    # Send out our target messages
-    send_tf_target()
+    enable_scanners()
 
-    # Give the nodes a few seconds to transmit data
-    # then we can exit
-    rospy.sleep(rospy.Duration(2))
-    rospy.loginfo("tf2_broadcaster_target sent TF and timestamp")
+    rospy.spin()
