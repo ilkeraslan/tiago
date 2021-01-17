@@ -41,29 +41,37 @@ def callback(value):
 
     if value.header.frame_id == 'foo/prox_horizontal_0':
         scan_publisher_0.publish(scan)
+        publish_frame("prox_horizontal_0", value.range)
     elif value.header.frame_id == 'foo/prox_horizontal_1':
         scan_publisher_1.publish(scan)
+        publish_frame("prox_horizontal_1", value.range)
     elif value.header.frame_id == 'foo/prox_horizontal_2':
         scan_publisher_2.publish(scan)
+        publish_frame("prox_horizontal_2", value.range)
     elif value.header.frame_id == 'foo/prox_horizontal_3':
         scan_publisher_3.publish(scan)
+        publish_frame("prox_horizontal_3", value.range)
     elif value.header.frame_id == 'foo/prox_horizontal_4':
         scan_publisher_4.publish(scan)
+        publish_frame("prox_horizontal_4", value.range)
     elif value.header.frame_id == 'foo/prox_horizontal_5':
         scan_publisher_5.publish(scan)
+        publish_frame("prox_horizontal_5", value.range)
     else:
         scan_publisher_6.publish(scan)
+        publish_frame("prox_horizontal_6", value.range)
+    
 
-        
+def publish_frame(child_frame_id, range_value):
     br = rospy.Publisher("/tf", tf2_msgs.msg.TFMessage, queue_size=1)
     t = geometry_msgs.msg.TransformStamped()
 
     t.header.stamp = rospy.Time.now()
     t.header.frame_id = "world"
-    t.child_frame_id = "prox_horizontal_0"
+    t.child_frame_id = child_frame_id
 
-    t.transform.translation.x = value.range
-    t.transform.translation.y = value.range
+    t.transform.translation.x = range_value
+    t.transform.translation.y = range_value
     t.transform.translation.z = 0.0
 
     q = tf_conversions.transformations.quaternion_from_euler(0, 0, 0)
