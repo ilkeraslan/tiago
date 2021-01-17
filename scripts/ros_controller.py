@@ -19,7 +19,7 @@ global foo
 foo = '/foo'
 
 global position
-position = 0
+position = 20
 
 def callback(res):
     # rospy.logwarn(f'Motor position: {res}')
@@ -33,13 +33,10 @@ def callback(res):
     rospy.logwarn(f'Left velocity: {left_velocity}')
     rospy.logwarn(f'Right velocity: {right_velocity}')
 
-    global position
-    position += res.linear.x
-
     service_set_motor_position_left.call(position)
     service_set_motor_position_right.call(position)
 
-    rospy.logwarn(f'Motor position: {position}')
+    rospy.logerr(f'Motor position: {position}')
 
     pose_message = Pose()
     pose_message.x = position
@@ -87,6 +84,6 @@ service_enable_motor_position_right.call(16)
 # motor_right_position = rospy.Subscriber(foo + "/motor_right_position/value", Float64Stamped, callback)
 
 # Subscribe to motor position values
-motor_left_position = rospy.Subscriber("/cmd_vel", Twist, callback)
+motor_left_position = rospy.Subscriber(foo + "/cmd_vel", Twist, callback)
 
 rospy.spin()

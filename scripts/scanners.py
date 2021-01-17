@@ -6,8 +6,11 @@ import rospy
 import tf2_ros
 from std_msgs.msg import Time
 from webots_ros.srv import set_float, get_float, set_int
+import geometry_msgs.msg
 from geometry_msgs.msg import TransformStamped
 from sensor_msgs.msg import Range, LaserScan
+import tf_conversions
+import tf2_msgs.msg
 
 foo = '/foo'
 scan_publisher_0 = None
@@ -51,6 +54,28 @@ def callback(value):
     else:
         scan_publisher_6.publish(scan)
 
+        
+    br = rospy.Publisher("/tf", tf2_msgs.msg.TFMessage, queue_size=1)
+    t = geometry_msgs.msg.TransformStamped()
+
+    t.header.stamp = rospy.Time.now()
+    t.header.frame_id = "world"
+    t.child_frame_id = "prox_horizontal_0"
+
+    t.transform.translation.x = value.range
+    t.transform.translation.y = value.range
+    t.transform.translation.z = 0.0
+
+    q = tf_conversions.transformations.quaternion_from_euler(0, 0, 0)
+
+    t.transform.rotation.x = q[0]
+    t.transform.rotation.y = q[1]
+    t.transform.rotation.z = q[2]
+    t.transform.rotation.w = q[3]
+
+    tfm = tf2_msgs.msg.TFMessage([t])
+    br.publish(tfm)
+
 
 def enable_scanners():
     rospy.wait_for_service(foo + "/prox_horizontal_0/enable")
@@ -84,6 +109,7 @@ def enable_scanners():
     rospy.Subscriber(foo + '/prox_horizontal_4/value', Range, callback)
     rospy.Subscriber(foo + '/prox_horizontal_5/value', Range, callback)
     rospy.Subscriber(foo + '/prox_horizontal_6/value', Range, callback)
+
 
 if __name__ == '__main__':
     rospy.init_node('scanners')

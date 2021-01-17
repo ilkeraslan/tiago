@@ -14,6 +14,7 @@ def handle_pose(msg, robot_name):
     t.header.frame_id = "world"
     t.child_frame_id = robot_name
 
+    rospy.logerr(f'Translation x: {msg.x}')
     t.transform.translation.x = msg.x
     t.transform.translation.y = msg.y
     t.transform.translation.z = 0.0
