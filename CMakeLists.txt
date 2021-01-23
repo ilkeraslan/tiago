@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(hello_robotics)
+project(tiago)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -107,7 +107,7 @@ generate_messages(
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
  ##INCLUDE_DIRS include
- LIBRARIES hello_robotics
+ LIBRARIES tiago
  CATKIN_DEPENDS roscpp rospy std_msgs message_runtime geometry_msgs tf2 tf2_ros
  ##DEPENDS system_lib
 )

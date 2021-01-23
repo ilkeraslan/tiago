@@ -17,7 +17,8 @@ class ThymioController:
         # initialize the node
         rospy.init_node(node_name, anonymous=True)
 
-        self.name = rospy.get_param('~robot_name')
+        # self.name = rospy.get_param('~robot_name')
+        self.name = "foo"
         rospy.loginfo('Controlling %s' % self.name)
 
         # create velocity publisher

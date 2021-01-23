@@ -6,14 +6,14 @@
   <include file="$(find webots_ros)/launch/webots.launch">
     <arg name="mode" value="realtime"/>
     <arg name="no_gui" value="$(arg no_gui)"/>
-    <arg name="world" value="$(find webots_ros)/worlds/ros_python.wbt"/>
+    <arg name="world" value="$(find webots_ros)/worlds/tiago.wbt"/>
   </include>
 
   <arg name="auto_close" default="false" doc="Startup mode"/>
   <env name="LD_LIBRARY_PATH" value="$(env LD_LIBRARY_PATH):$(env WEBOTS_HOME)/lib/controller"/>
   <env name="PYTHONPATH" value="$(env PYTHONPATH):$(env WEBOTS_HOME)/lib/controller/python27" unless="$(eval '1' if env('ROS_DISTRO') == 'noetic' else '0')" />
   <env name="PYTHONPATH" value="$(env PYTHONPATH):$(env WEBOTS_HOME)/lib/controller/python38" if="$(eval '1' if env('ROS_DISTRO') == 'noetic' else '0')" />
-  <node name="ros_controller" pkg="hello_robotics" type="ros_controller.py" required="$(arg auto_close)"/>
+  <node name="ros_controller" pkg="tiago" type="ros_controller.py" required="$(arg auto_close)"/>
   <!-- <node name="listener" pkg="hello_robotics" type="listener.py" output="screen"/> -->
   <!-- <node name="talker" pkg="hello_robotics" type="talker.py" output="screen"/> -->
   
@@ -26,12 +26,12 @@
   <param name="scale_linear" value="2" type="double"/>
   <param name="scale_angular" value="2" type="double"/>
 
-  <node name="my_broadcaster" pkg="hello_robotics" type="tf2_broadcaster.py" respawn="false" output="screen">
+  <!-- <node name="my_broadcaster" pkg="hello_robotics" type="tf2_broadcaster.py" respawn="false" output="screen">
     <param name="robot_name" value="/$(arg robot_name)" />
   </node>
   <node name="my_listener" pkg="hello_robotics" type="tf2_listener.py" respawn="false" output="screen">
     <param name="robot_name" value="/$(arg robot_name)" />
-  </node>
+  </node> -->
 
   <!-- <node name="rviz" pkg="hello_robotics" type="rviz"></node> -->
 
@@ -39,6 +39,10 @@
     <param name="robot_name" value="/$(arg robot_name)" />
   </node> -->
 
-  <node name="scanners" pkg="hello_robotics" type="scanners.py" output="screen"/>
+  <node name="scanners" pkg="tiago" type="scanners.py" output="screen"/>
+
+  <node name="utils" pkg="tiago" type="utils.py" output="screen">
+    <param name="robot_name" value="/$(arg robot_name)" />
+  </node>
 
 </launch>

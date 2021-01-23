@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>hello_robotics</name>
+  <name>tiago</name>
   <version>0.0.0</version>
-  <description>The hello_robotics package</description>
+  <description>The tiago package</description>
 
   <maintainer email="me@ilker.it">ilker</maintainer>
 

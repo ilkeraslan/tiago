@@ -11,15 +11,13 @@ from webots_ros.srv import set_float, get_float, set_int
 from webots_ros.msg import Float64Stamped
 from geometry_msgs.msg import Twist
 from turtlesim.msg import Pose
+from sensor_msgs.msg import Range, LaserScan
 
 # initialize the node if we want to use
 rospy.init_node('controller', anonymous=True)
 
 global foo
 foo = '/foo'
-
-global position
-position = 20
 
 def callback(res):
     # rospy.logwarn(f'Motor position: {res}')
@@ -43,47 +41,42 @@ def callback(res):
     pose_message.y = 0
     pose_publisher = rospy.Publisher(foo + "/pose", Pose, queue_size=10)
     pose_publisher.publish(pose_message)
+  
 
-# check for services
-rospy.wait_for_service(foo + "/motor_left/set_position")
-rospy.wait_for_service(foo + "/motor_right/set_position")
 
-rospy.wait_for_service(foo + "/motor_left_position/enable")
-rospy.wait_for_service(foo + "/motor_right_position/enable")
+# Check for services
+rospy.wait_for_service(foo + "/accelerometer/enable")
+rospy.wait_for_service(foo + "/gyro/enable")
+rospy.wait_for_service(foo + "/inertial_unit/enable")
+rospy.wait_for_service(foo + "/Hokuyo_URG_04LX_UG01/enable")
 
-rospy.wait_for_service(foo + "/motor_left/set_velocity")
-rospy.wait_for_service(foo + "/motor_right/set_velocity")
+rospy.wait_for_service(foo + "/wheel_left_joint/set_velocity")
+rospy.wait_for_service(foo + "/wheel_right_joint/set_velocity")
+rospy.wait_for_service(foo + "/wheel_left_joint/set_position")
+rospy.wait_for_service(foo + "/wheel_right_joint/set_position")
 
-rospy.wait_for_service(foo + "/motor_left/get_velocity")
-rospy.wait_for_service(foo + "/motor_right/get_velocity")
 
-# create services
-service_enable_motor_position_left = rospy.ServiceProxy(foo + "/motor_left_position/enable", set_int)
-service_enable_motor_position_right = rospy.ServiceProxy(foo + "/motor_right_position/enable", set_int)
+# Create services
+service_set_motor_velocity_left = rospy.ServiceProxy(foo + "/wheel_left_joint/set_velocity", set_float)
+service_set_motor_velocity_right = rospy.ServiceProxy(foo + "/wheel_right_joint/set_velocity", set_float)
+service_set_motor_position_left = rospy.ServiceProxy(foo + "/wheel_left_joint/set_position", set_float)
+service_set_motor_position_right = rospy.ServiceProxy(foo + "/wheel_right_joint/set_position", set_float)
 
-service_set_motor_position_left = rospy.ServiceProxy(foo + "/motor_left/set_position", set_float)
-service_set_motor_position_right = rospy.ServiceProxy(foo + "/motor_right/set_position", set_float)
+service_lidar = rospy.ServiceProxy(foo + "/Hokuyo_URG_04LX_UG01/enable", set_int)
 
-service_set_motor_velocity_left = rospy.ServiceProxy(foo + "/motor_left/set_velocity", set_float)
-service_set_motor_velocity_right = rospy.ServiceProxy(foo + "/motor_right/set_velocity", set_float)
+service_set_motor_position_left.call(float('+inf'))
+service_set_motor_position_right.call(float('+inf'))
+service_set_motor_velocity_left.call(3)
+service_set_motor_velocity_right.call(3)
+service_lidar.call(10)
 
-service_get_motor_velocity_left = rospy.ServiceProxy(foo + "/motor_left/get_velocity", get_float)
-service_get_motor_velocity_right = rospy.ServiceProxy(foo + "/motor_right/get_velocity", get_float)
 
-# # call set position services with 25 milliseconds sampling rate
-# service_set_motor_position_left.call(100)
-# service_set_motor_position_right.call(100)
-
-# call enable position services with 16 milliseconds sampling rate
-service_enable_motor_position_left.call(16)
-service_enable_motor_position_right.call(16)
-
-# # pub = rospy.Publisher('motor', Float64, queue_size=10)
 # # Subscribe to motor position values
-# motor_left_position = rospy.Subscriber(foo + "/motor_left_position/value", Float64Stamped, callback)
-# motor_right_position = rospy.Subscriber(foo + "/motor_right_position/value", Float64Stamped, callback)
+# motor_left_position = rospy.Subscriber(foo + "/cmd_vel", Twist, callback)
 
-# Subscribe to motor position values
-motor_left_position = rospy.Subscriber(foo + "/cmd_vel", Twist, callback)
+# scan_publisher_0 = rospy.Subscriber(foo + '/scan_0', LaserScan, my_callback_turn_left)
+# scan_publisher_2 = rospy.Subscriber(foo + '/scan_2', LaserScan, my_callback)
+# scan_publisher_4 = rospy.Subscriber(foo + '/scan_4', LaserScan, my_callback_turn_right)
+
 
 rospy.spin()
