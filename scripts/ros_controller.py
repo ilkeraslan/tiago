@@ -7,8 +7,8 @@ to drive a robot and stop it before colliding with an obstacle.
 
 import rospy
 from std_msgs.msg import Float64
-from webots_ros.srv import set_float, get_float, set_int
-from webots_ros.msg import Float64Stamped
+from webots_ros.srv import set_float, get_float, set_int, get_int
+from webots_ros.msg import Float64Stamped, BoolStamped
 from geometry_msgs.msg import Twist
 from turtlesim.msg import Pose
 from sensor_msgs.msg import Range, LaserScan
@@ -18,6 +18,8 @@ rospy.init_node('controller', anonymous=True)
 
 global foo
 foo = '/foo'
+bumper_subscriber = None
+
 
 def callback(res):
     # rospy.logwarn(f'Motor position: {res}')
@@ -41,20 +43,27 @@ def callback(res):
     pose_message.y = 0
     pose_publisher = rospy.Publisher(foo + "/pose", Pose, queue_size=10)
     pose_publisher.publish(pose_message)
-  
 
+def bumper_callback(res):
+    rospy.logwarn(f'Bumped: {res.data}')
+
+
+def subscribe_to_topics():
+    bumper_subscriber = rospy.Subscriber(foo + "/base_cover_link/value", BoolStamped, bumper_callback)
+  
 
 # Check for services
 rospy.wait_for_service(foo + "/accelerometer/enable")
 rospy.wait_for_service(foo + "/gyro/enable")
 rospy.wait_for_service(foo + "/inertial_unit/enable")
 rospy.wait_for_service(foo + "/Hokuyo_URG_04LX_UG01/enable")
+rospy.wait_for_service(foo + "/base_cover_link/enable")
+rospy.wait_for_service(foo + "/base_cover_link/get_type")
 
 rospy.wait_for_service(foo + "/wheel_left_joint/set_velocity")
 rospy.wait_for_service(foo + "/wheel_right_joint/set_velocity")
 rospy.wait_for_service(foo + "/wheel_left_joint/set_position")
 rospy.wait_for_service(foo + "/wheel_right_joint/set_position")
-
 
 # Create services
 service_set_motor_velocity_left = rospy.ServiceProxy(foo + "/wheel_left_joint/set_velocity", set_float)
@@ -62,13 +71,27 @@ service_set_motor_velocity_right = rospy.ServiceProxy(foo + "/wheel_right_joint/
 service_set_motor_position_left = rospy.ServiceProxy(foo + "/wheel_left_joint/set_position", set_float)
 service_set_motor_position_right = rospy.ServiceProxy(foo + "/wheel_right_joint/set_position", set_float)
 
+service_accelerometer = rospy.ServiceProxy(foo + "/accelerometer/enable", set_int)
+service_gyro = rospy.ServiceProxy(foo + "/gyro/enable", set_int)
+service_inertial = rospy.ServiceProxy(foo + "/inertial_unit/enable", set_int)
 service_lidar = rospy.ServiceProxy(foo + "/Hokuyo_URG_04LX_UG01/enable", set_int)
+service_touch_sensor = rospy.ServiceProxy(foo + "/base_cover_link/enable", set_int)
+service_touch_sensor_type = rospy.ServiceProxy(foo + "/base_cover_link/get_type", get_int)
 
 service_set_motor_position_left.call(float('+inf'))
 service_set_motor_position_right.call(float('+inf'))
 service_set_motor_velocity_left.call(3)
 service_set_motor_velocity_right.call(3)
+
+service_accelerometer.call(10)
+service_gyro.call(10)
+service_inertial.call(10)
 service_lidar.call(10)
+service_touch_sensor.call(10)
+service_touch_sensor_type.call()
+
+# Subscribe to topics that we want to listen
+subscribe_to_topics()
 
 
 # # Subscribe to motor position values
