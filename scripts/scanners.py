@@ -14,10 +14,16 @@ import tf2_msgs.msg
 
 foo = '/foo'
 scan_publisher = None
+front_distance = None
 
 def callback(value):
     # rospy.logwarn(f'{value.header.frame_id}: {value.ranges}')
-    rospy.logwarn(f'{value.header.frame_id}: {value.ranges}')
+    # rospy.logwarn(f'{value.header.frame_id}: {value.ranges}')
+    # value.ranges // 667 elements
+    front_distance = min(value.ranges[278:388])
+
+    if(front_distance < 0.4):
+        rospy.logerr("OBSTACLE")
     
 
 def publish_frame(child_frame_id, range_value):

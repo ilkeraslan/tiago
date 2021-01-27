@@ -6,6 +6,7 @@ to drive a robot and stop it before colliding with an obstacle.
 """
 
 import rospy
+import math
 from std_msgs.msg import Float64
 from webots_ros.srv import set_float, get_float, set_int, get_int
 from webots_ros.msg import Float64Stamped, BoolStamped
@@ -19,6 +20,10 @@ rospy.init_node('controller', anonymous=True)
 global foo
 foo = '/foo'
 bumper_subscriber = None
+left_vel_sensor_subscriber = None
+right_vel_sensor_subscriber = None
+left_velocity = 0.0
+right_velocity = 0.0
 
 
 def callback(res):
@@ -44,17 +49,52 @@ def callback(res):
     pose_publisher = rospy.Publisher(foo + "/pose", Pose, queue_size=10)
     pose_publisher.publish(pose_message)
 
+
 def bumper_callback(res):
-    rospy.logwarn(f'Bumped: {res.data}')
+    # rospy.logwarn(f'Bumped: {res.data}')
     if (res.data is True):
         service_set_motor_velocity_left.call(-3)
         service_set_motor_velocity_right.call(-3)
 
 
+def velocity_callback_left(res):
+    global left_velocity
+    left_velocity = res.data 
+
+def velocity_callback_right(res):
+    global right_velocity
+    right_velocity = res.data 
+    
+
 
 def subscribe_to_topics():
     bumper_subscriber = rospy.Subscriber(foo + "/base_cover_link/value", BoolStamped, bumper_callback)
-  
+    left_vel_sensor_subscriber = rospy.Subscriber(foo + '/wheel_left_joint_sensor/value', Float64Stamped, velocity_callback_left)
+    right_vel_sensor_subscriber = rospy.Subscriber(foo + '/wheel_right_joint_sensor/value', Float64Stamped, velocity_callback_right)
+
+
+def move(distance):
+    global left_velocity
+    global right_velocity
+
+    rotation = distance / (math.pi * 0.2)
+    angle = rotation * 2 * math.pi
+    left = left_velocity + angle
+    right = right_velocity + angle
+
+    service_set_motor_position_left.call(left)
+    service_set_motor_position_right.call(right)
+
+    service_set_motor_velocity_left.call(3)
+    service_set_motor_velocity_right.call(3)
+    stop()
+
+def stop():
+    global left_velocity
+    global right_velocity
+    while (left_velocity > 0.1 and right_velocity > 0.1):
+        pass
+
 
 # Check for services
 rospy.wait_for_service(foo + "/accelerometer/enable")
@@ -65,12 +105,20 @@ rospy.wait_for_service(foo + "/base_cover_link/enable")
 
 rospy.wait_for_service(foo + "/wheel_left_joint/set_velocity")
 rospy.wait_for_service(foo + "/wheel_right_joint/set_velocity")
+
 rospy.wait_for_service(foo + "/wheel_left_joint/set_position")
 rospy.wait_for_service(foo + "/wheel_right_joint/set_position")
+
+rospy.wait_for_service(foo + "/wheel_right_joint_sensor/enable")
+rospy.wait_for_service(foo + "/wheel_left_joint_sensor/enable")
 
 # Create services
 service_set_motor_velocity_left = rospy.ServiceProxy(foo + "/wheel_left_joint/set_velocity", set_float)
 service_set_motor_velocity_right = rospy.ServiceProxy(foo + "/wheel_right_joint/set_velocity", set_float)
+
+service_get_motor_velocity_left = rospy.ServiceProxy(foo + "/wheel_left_joint_sensor/enable", set_int)
+service_get_motor_velocity_right = rospy.ServiceProxy(foo + "/wheel_right_joint_sensor/enable", set_int)
+
 service_set_motor_position_left = rospy.ServiceProxy(foo + "/wheel_left_joint/set_position", set_float)
 service_set_motor_position_right = rospy.ServiceProxy(foo + "/wheel_right_joint/set_position", set_float)
 
@@ -80,10 +128,19 @@ service_inertial = rospy.ServiceProxy(foo + "/inertial_unit/enable", set_int)
 service_lidar = rospy.ServiceProxy(foo + "/Hokuyo_URG_04LX_UG01/enable", set_int)
 service_touch_sensor = rospy.ServiceProxy(foo + "/base_cover_link/enable", set_int)
 
-service_set_motor_position_left.call(float('+inf'))
-service_set_motor_position_right.call(float('+inf'))
-service_set_motor_velocity_left.call(3)
-service_set_motor_velocity_right.call(3)
+service_get_motor_velocity_left.call(10)
+service_get_motor_velocity_right.call(10)
+
+# service_set_motor_position_left.call(float('+inf'))
+# service_set_motor_position_right.call(float('+inf'))
+
+move(0.7)
+// TODO: rotation
+// TODO: odometry update
+// TODO: Astar
+
+# service_set_motor_velocity_left.call(3)
+# service_set_motor_velocity_right.call(3)
 
 service_accelerometer.call(10)
 service_gyro.call(10)

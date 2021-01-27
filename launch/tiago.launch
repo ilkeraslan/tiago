@@ -21,7 +21,7 @@
   <!-- <node name="tracker" pkg="hello_robotics" type="tracker.py" output="screen"/> -->
   <!-- <node name="my_pose" pkg="hello_robotics" type="my_pose.py" output="screen"/> -->
 
-  <node name="odom" pkg="tiago" type="odometry.py" output="screen"/>
+  <!-- <node name="odom" pkg="tiago" type="odometry.py" output="screen"/> -->
 
     <!-- Axes -->
   <param name="scale_linear" value="2" type="double"/>
