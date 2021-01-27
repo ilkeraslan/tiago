@@ -16,7 +16,8 @@ foo = '/foo'
 scan_publisher = None
 
 def callback(value):
-    rospy.logwarn(f'{value.header.frame_id}: {value.range_max}')
+    # rospy.logwarn(f'{value.header.frame_id}: {value.ranges}')
+    rospy.logwarn(f'{value.header.frame_id}: {value.ranges}')
     
 
 def publish_frame(child_frame_id, range_value):
@@ -49,7 +50,7 @@ def enable_scanners():
 if __name__ == '__main__':
     rospy.init_node('scanners')
 
-    scan_publisher_0 = rospy.Publisher(foo + '/lidar_scan', LaserScan, queue_size=50)
+    scan_publisher_0 = rospy.Publisher(foo + '/lidar_scan', LaserScan, queue_size=10)
 
     rospy.sleep(rospy.Duration(2))
 

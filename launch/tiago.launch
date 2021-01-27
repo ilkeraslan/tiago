@@ -3,6 +3,7 @@
   <!-- start Webots -->
   <arg name="no_gui" default="false," doc="Start Webots with minimal GUI"/>
   <arg name="robot_name" default="foo" />
+  <arg name="package_name" default="tiago" />
   <include file="$(find webots_ros)/launch/webots.launch">
     <arg name="mode" value="realtime"/>
     <arg name="no_gui" value="$(arg no_gui)"/>
@@ -20,20 +21,20 @@
   <!-- <node name="tracker" pkg="hello_robotics" type="tracker.py" output="screen"/> -->
   <!-- <node name="my_pose" pkg="hello_robotics" type="my_pose.py" output="screen"/> -->
 
-  <!-- <node name="foo" pkg="hello_robotics" type="foo.py" output="screen"/> -->
+  <node name="odom" pkg="tiago" type="odometry.py" output="screen"/>
 
     <!-- Axes -->
   <param name="scale_linear" value="2" type="double"/>
   <param name="scale_angular" value="2" type="double"/>
 
-  <!-- <node name="my_broadcaster" pkg="hello_robotics" type="tf2_broadcaster.py" respawn="false" output="screen">
+  <node name="my_broadcaster" pkg="tiago" type="tf2_broadcaster.py" respawn="false" output="screen">
     <param name="robot_name" value="/$(arg robot_name)" />
   </node>
-  <node name="my_listener" pkg="hello_robotics" type="tf2_listener.py" respawn="false" output="screen">
+  <node name="my_listener" pkg="tiago" type="tf2_listener.py" respawn="false" output="screen">
     <param name="robot_name" value="/$(arg robot_name)" />
-  </node> -->
+  </node>
 
-  <!-- <node name="rviz" pkg="hello_robotics" type="rviz"></node> -->
+  <node type="rviz" name="rviz" pkg="rviz" args="-d $(find tiago)/rviz/turtle_rviz.rviz" />
 
   <!-- <node pkg="hello_robotics" name="assignment2_task1" type="example.py" output="screen">
     <param name="robot_name" value="/$(arg robot_name)" />

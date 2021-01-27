@@ -46,6 +46,10 @@ def callback(res):
 
 def bumper_callback(res):
     rospy.logwarn(f'Bumped: {res.data}')
+    if (res.data is True):
+        service_set_motor_velocity_left.call(-3)
+        service_set_motor_velocity_right.call(-3)
+
 
 
 def subscribe_to_topics():
@@ -58,7 +62,6 @@ rospy.wait_for_service(foo + "/gyro/enable")
 rospy.wait_for_service(foo + "/inertial_unit/enable")
 rospy.wait_for_service(foo + "/Hokuyo_URG_04LX_UG01/enable")
 rospy.wait_for_service(foo + "/base_cover_link/enable")
-rospy.wait_for_service(foo + "/base_cover_link/get_type")
 
 rospy.wait_for_service(foo + "/wheel_left_joint/set_velocity")
 rospy.wait_for_service(foo + "/wheel_right_joint/set_velocity")
@@ -76,7 +79,6 @@ service_gyro = rospy.ServiceProxy(foo + "/gyro/enable", set_int)
 service_inertial = rospy.ServiceProxy(foo + "/inertial_unit/enable", set_int)
 service_lidar = rospy.ServiceProxy(foo + "/Hokuyo_URG_04LX_UG01/enable", set_int)
 service_touch_sensor = rospy.ServiceProxy(foo + "/base_cover_link/enable", set_int)
-service_touch_sensor_type = rospy.ServiceProxy(foo + "/base_cover_link/get_type", get_int)
 
 service_set_motor_position_left.call(float('+inf'))
 service_set_motor_position_right.call(float('+inf'))
@@ -88,7 +90,6 @@ service_gyro.call(10)
 service_inertial.call(10)
 service_lidar.call(10)
 service_touch_sensor.call(10)
-service_touch_sensor_type.call()
 
 # Subscribe to topics that we want to listen
 subscribe_to_topics()
