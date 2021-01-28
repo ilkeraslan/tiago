@@ -27,10 +27,14 @@ vx = 0.1
 vy = -0.1
 vth = 0.1
 
+# vx = speed;
+# vy = 0;
+# vth = ((right_speed - left_speed)/lengthWheelBase);
+
 current_time = rospy.Time.now()
 last_time = rospy.Time.now()
-
 r = rospy.Rate(1.0)
+
 while not rospy.is_shutdown():
     current_time = rospy.Time.now()
 
