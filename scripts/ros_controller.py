@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
 """
-This is a simple example of a Python ROS node receiving sensor values and publishing motor commands (velocity)
-to drive a robot and stop it before colliding with an obstacle.
+This is controller node receiving sensor values and publishing motor commands (velocity)
+to drive Tiago and stop it before colliding with an obstacle.
 """
 
 import rospy
@@ -14,18 +14,6 @@ from geometry_msgs.msg import Twist
 from turtlesim.msg import Pose
 from sensor_msgs.msg import Range, LaserScan
 
-
-bumper_subscriber = None
-left_vel_sensor_subscriber = None
-right_vel_sensor_subscriber = None
-service_accelerometer = None
-service_gyro = None
-service_inertial = None
-service_lidar = None
-service_touch_sensor = None
-
-left_velocity = 0.0
-right_velocity = 0.0
 
 class TiagoController:
     def __init__(self, node_name):
@@ -45,6 +33,9 @@ class TiagoController:
         self.create_services()
         self.call_services()
 
+        self.left_velocity = 0.0
+        self.right_velocity = 0.0
+        
         self.move(0.7)
         rospy.sleep(rospy.Duration(5))
         self.move(-0.7)
@@ -55,41 +46,33 @@ class TiagoController:
     def bumper_callback(self, res):
         # rospy.logwarn(f'Bumped: {res.data}')
         if (res.data is True):
-            service_set_motor_velocity_left.call(-3)
-            service_set_motor_velocity_right.call(-3)
+            self.service_set_motor_velocity_left.call(-3)
+            self.service_set_motor_velocity_right.call(-3)
 
 
     def velocity_callback_left(self, res):
-        global left_velocity
-        left_velocity = res.data 
+        self.left_velocity = res.data 
 
 
     def velocity_callback_right(self, res):
-        global right_velocity
-        right_velocity = res.data 
-
+        self.right_velocity = res.data 
 
 
     def move(self, distance):
-        global left_velocity
-        global right_velocity
+        self.rotation = distance / (math.pi * 0.2)
+        self.angle = self.rotation * 2 * math.pi
+        self.left = self.left_velocity + self.angle
+        self.right = self.right_velocity + self.angle
 
-        rotation = distance / (math.pi * 0.2)
-        angle = rotation * 2 * math.pi
-        left = left_velocity + angle
-        right = right_velocity + angle
-
-        self.service_set_motor_position_left.call(left)
-        self.service_set_motor_position_right.call(right)
+        self.service_set_motor_position_left.call(self.left)
+        self.service_set_motor_position_right.call(self.right)
 
         self.service_set_motor_velocity_left.call(3)
         self.service_set_motor_velocity_right.call(3)
         self.stop()
 
     def stop(self):
-        global left_velocity
-        global right_velocity
-        while (left_velocity > 0.1 and right_velocity > 0.1):
+        while (self.left_velocity > 0.1 and self.right_velocity > 0.1):
             pass
 
     def check_for_services(self):
