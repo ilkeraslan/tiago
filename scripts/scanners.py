@@ -17,8 +17,6 @@ scan_publisher = None
 front_distance = None
 
 def callback(value):
-    # rospy.logwarn(f'{value.header.frame_id}: {value.ranges}')
-    # rospy.logwarn(f'{value.header.frame_id}: {value.ranges}')
     # value.ranges // 667 elements
     front_distance = min(value.ranges[278:388])
 

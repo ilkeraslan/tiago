@@ -36,9 +36,9 @@ class TiagoController:
         self.left_velocity = 0.0
         self.right_velocity = 0.0
         
-        self.move(0.7)
-        rospy.sleep(rospy.Duration(5))
-        self.move(-0.7)
+        self.move(2)
+        rospy.sleep(rospy.Duration(12))
+        self.move(-2)
 
         rospy.spin()
 
@@ -59,16 +59,16 @@ class TiagoController:
 
 
     def move(self, distance):
-        self.rotation = distance / (math.pi * 0.2)
-        self.angle = self.rotation * 2 * math.pi
-        self.left = self.left_velocity + self.angle
-        self.right = self.right_velocity + self.angle
+        rotation = distance / (math.pi * 0.2)
+        angle = rotation * 2 * math.pi
+        left = self.left_velocity + angle
+        right = self.right_velocity + angle
 
-        self.service_set_motor_position_left.call(self.left)
-        self.service_set_motor_position_right.call(self.right)
+        self.service_set_motor_position_left.call(left)
+        self.service_set_motor_position_right.call(right)
 
-        self.service_set_motor_velocity_left.call(3)
-        self.service_set_motor_velocity_right.call(3)
+        self.service_set_motor_velocity_left.call(2)
+        self.service_set_motor_velocity_right.call(2)
         self.stop()
 
     def stop(self):
@@ -96,8 +96,8 @@ class TiagoController:
         self.service_set_motor_velocity_left = rospy.ServiceProxy(self.name + "/wheel_left_joint/set_velocity", set_float)
         self.service_set_motor_velocity_right = rospy.ServiceProxy(self.name + "/wheel_right_joint/set_velocity", set_float)
 
-        self.service_get_motor_velocity_left = rospy.ServiceProxy(self.name + "/wheel_left_joint_sensor/enable", set_int)
-        self.service_get_motor_velocity_right = rospy.ServiceProxy(self.name + "/wheel_right_joint_sensor/enable", set_int)
+        self.service_get_motor_position_left = rospy.ServiceProxy(self.name + "/wheel_left_joint_sensor/enable", set_int)
+        self.service_get_motor_position_right = rospy.ServiceProxy(self.name + "/wheel_right_joint_sensor/enable", set_int)
 
         self.service_set_motor_position_left = rospy.ServiceProxy(self.name + "/wheel_left_joint/set_position", set_float)
         self.service_set_motor_position_right = rospy.ServiceProxy(self.name + "/wheel_right_joint/set_position", set_float)
@@ -115,8 +115,8 @@ class TiagoController:
         self.service_inertial.call(10)
         self.service_lidar.call(10)
         self.service_touch_sensor.call(10)
-        self.service_get_motor_velocity_left.call(10)
-        self.service_get_motor_velocity_right.call(10)
+        self.service_get_motor_position_left.call(10)
+        self.service_get_motor_position_right.call(10)
         
         # service_set_motor_position_left.call(float('+inf'))
         # service_set_motor_position_right.call(float('+inf'))
