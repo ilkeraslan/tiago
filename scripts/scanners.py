@@ -4,8 +4,9 @@ import math
 
 import rospy
 import tf2_ros
-from std_msgs.msg import Time
-from webots_ros.srv import set_float, get_float, set_int
+from std_msgs.msg import Time, Bool
+from webots_ros.srv import set_float, get_float, set_int, field_get_floatRequest
+from webots_ros.msg import Float64Stamped
 import geometry_msgs.msg
 from geometry_msgs.msg import TransformStamped
 from sensor_msgs.msg import LaserScan

@@ -14,6 +14,7 @@ from webots_ros.srv import set_bool, get_float
 
 rospy.init_node('odometry_publisher')
 
+
 odom_pub = rospy.Publisher("odom", Odometry, queue_size=50)
 odom_broadcaster = tf2_ros.TransformBroadcaster()
 t = geometry_msgs.msg.TransformStamped()
@@ -21,61 +22,20 @@ t.header.stamp = rospy.Time.now()
 t.header.frame_id = "world"
 t.child_frame_id = "foo"
 
-rospy.wait_for_service("/foo/wheel_left_joint/get_velocity")
-vel_left_service = rospy.ServiceProxy("/foo/wheel_left_joint/get_velocity", get_float)
-rospy.wait_for_service("/foo/wheel_right_joint/get_velocity")
-vel_right_service = rospy.ServiceProxy("/foo/wheel_right_joint/get_velocity", get_float)
-left_velocity = 0
-right_velocity = 0
-
-rospy.logerr(f'Vel_left_before: {left_velocity}')
-rospy.logerr(f'Vel_right_before: {right_velocity}')
-
-left_velocity = vel_left_service.call()
-right_velocity = vel_right_service.call()
-
-rospy.loginfo("Called the service")
-rospy.logerr(f'Vel_after_left: {left_velocity.value}')
-rospy.logerr(f'Vel_after_right: {right_velocity.value}')
-
 x = 0.0
 y = 0.0
 th = 0.0
 
-# v_left = 0.0
-# v_right = 0.0
-vx = 0.1
+vx = 0
 vy = 0
 vth = 0.0
 
-# def velocity_callback_left(res):
-#     global v_left
-#     global v_right
-#     global vx
-# #     global vth
-#     v_left = res.data
-#     vx =  (v_left + v_right) / 2
-# #     vth = (v_left - v_right) / 0.2
+def velocity_callback(res):
+    global vx
+    vx = res.linear.x
 
+vel_subscriber = rospy.Subscriber('/foo/cmd_vel', Twist, velocity_callback)
 
-# def velocity_callback_right(res):
-#     global v_left
-#     global v_right
-#     global vx
-#     # global vth
-#     v_right = res.data 
-#     vx =  (v_left + v_right) / 2
-#     # vth = (v_left - v_right) / 0.2
-
-
-# left_vel_sensor_subscriber = rospy.Subscriber("/foo" + '/wheel_left_joint_sensor/value', Float64Stamped, velocity_callback_left)
-# right_vel_sensor_subscriber = rospy.Subscriber("/foo" + '/wheel_right_joint_sensor/value', Float64Stamped, velocity_callback_right)
-
-
-
-# vx = speed;
-# vy = 0;
-# vth = ((right_speed - left_speed)/lengthWheelBase);
 
 current_time = rospy.Time.now()
 last_time = rospy.Time.now()
