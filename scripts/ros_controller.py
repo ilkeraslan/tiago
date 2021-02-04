@@ -49,7 +49,11 @@ class TiagoController:
         # goal.y = 2
         # distance = math.sqrt(pow((goal.x - 0), 2) + pow((goal.y - 0), 2))
         
-        self.move(1)
+        self.move(0.5)
+        rospy.sleep(2)
+        self.rotate()
+        rospy.sleep(2)      
+        self.move(0.8)
 
         # self.service_set_motor_velocity_left.call(self.left_velocity)
         # self.service_set_motor_velocity_right.call(self.right_velocity)
@@ -57,7 +61,7 @@ class TiagoController:
         # self.service_set_motor_position_right.call(3)
 
 
-        self.rotate()
+        # self.rotate()
 
         # self.service_set_motor_velocity_left.call(self.left_velocity)
         # self.service_set_motor_velocity_right.call(self.right_velocity)
@@ -88,33 +92,47 @@ class TiagoController:
 
         #Setting the current time for distance calculus
         t0 = rospy.Time.now().to_sec()
-        current_distance = 0
+        current_distance = self.left_position
+        # new_distance = self.left_position + distance
+        # rot = distance / (math.pi * 0.2)
 
-        #Loop to move the turtle in an specified distance
-        
         # pos_.rx() += std::cos(orient_) * req.linear;
         # pos_.ry() += - std::sin(orient_) * req.linear;
-        rotation = distance / (math.pi * 0.2)
+        
+        # rotation = distance / (math.pi * 0.2)
+
+        new_distance = (self.left_position / 10) + distance
+        rotation = new_distance / (math.pi * 0.2)
         angle = rotation * 2 * math.pi
         left = self.left_velocity + angle
         right = self.right_velocity + angle
 
-        while(current_distance < ((left + right)) / 2):
+        # new_distance = (self.left_position / 10) + distance
+        # angle = new_distance * 10
+        # left = self.left_velocity + angle
+        # right = self.right_velocity + angle
+        
 
+        rospy.logerr(f'LEFT: {self.left_position}')
+        rospy.logerr(f'RIGHT: {self.right_position}')
+
+        while(current_distance < ((distance + 0.1) * 10)):
             self.service_set_motor_velocity_left.call(self.left_velocity)
             self.service_set_motor_velocity_right.call(self.right_velocity)
 
             self.service_set_motor_position_left.call(left)
             self.service_set_motor_position_right.call(right)
+            rospy.logerr(f'LEFT: {left}')
+            rospy.logerr(f'RIGHT: {right}')
             
             #Publish the velocity
             self.velocity_publisher.publish(vel_msg)
             
             #Takes actual time to velocity calculus
             t1=rospy.Time.now().to_sec()
-            
-            #Calculates distancePoseStamped
+
             current_distance = ((self.left_velocity + self.right_velocity) / 2) * (t1-t0)
+            first_distance = self.left_position + current_distance
             rospy.logerr(f'CURRENT DISTANCE: {current_distance}')
         
         #After the loop, stops the robot
