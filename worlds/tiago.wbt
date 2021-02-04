@@ -1,0 +1,94 @@
+#VRML_SIM R2020b utf8
+WorldInfo {
+  info [
+    "Simple Thymio II simulation controlled by a ROS node written in Python."
+  ]
+  title "ROS Python"
+  basicTimeStep 20
+  coordinateSystem "NUE"
+  contactProperties [
+    ContactProperties {
+      material2 "thymio body"
+      coulombFriction [
+        0.7
+      ]
+    }
+  ]
+}
+Viewpoint {
+  orientation 0.4857476184225394 -0.8531161056390593 -0.19037374161390183 5.385335860751455
+  position 5.183790865095322 3.4238492904019737 5.420060023751351
+  follow "Tiago"
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+CircleArena {
+  radius 3
+  floorAppearance Parquetry {
+    type "chequered"
+    textureTransform TextureTransform {
+    }
+  }
+  wallThickness 0.05
+  wallAppearance BrushedAluminium {
+    textureTransform TextureTransform {
+    }
+  }
+}
+Solid {
+  translation 2.74 0.05 0.51
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0.937255 0.160784 0.160784
+        }
+        texture ImageTexture {
+        }
+        textureTransform TextureTransform {
+        }
+      }
+      geometry Box {
+        size 0.2 0.2 0.2
+      }
+    }
+  ]
+  boundingObject Box {
+    size 0.2 0.2 0.2
+  }
+  physics Physics {
+    density 10000
+  }
+  recognitionColors [
+    0.12549 0.290196 0.529412
+  ]
+}
+DEF TIAGO_IRON TiagoIron {
+  translation -1.32 0.095 0
+  name "Tiago"
+  controller "ros"
+  controllerArgs [
+    "--name=foo"
+  ]
+}
+WoodenBox {
+  translation 0.1 0.05 1.25
+  size 0.1 0.1 0.1
+}
+WoodenBox {
+  translation 1.67 0.05 1.47
+  name "wooden box(3)"
+  size 0.1 0.1 0.1
+}
+WoodenBox {
+  translation -2.05 0.05 0.63
+  name "wooden box(2)"
+  size 0.1 0.1 0.1
+}
+WoodenBox {
+  translation 0.84 0.06 -0.54
+  name "wooden box(1)"
+  size 0.1 0.1 0.1
+}

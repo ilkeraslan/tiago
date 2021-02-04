@@ -10,7 +10,7 @@ import math
 from std_msgs.msg import Float64
 from webots_ros.srv import set_float, get_float, set_int, get_int
 from webots_ros.msg import Float64Stamped, BoolStamped
-from geometry_msgs.msg import Twist, Vector3
+from geometry_msgs.msg import Point, Twist, Vector3
 from turtlesim.msg import Pose
 from sensor_msgs.msg import Range, LaserScan
 
@@ -42,8 +42,30 @@ class TiagoController:
         self.right_velocity = 1
         self.left_position = 0
         self.right_position = 0
+        self.orientation = 0
+
+        # goal = Point()
+        # goal.x = 2
+        # goal.y = 2
+        # distance = math.sqrt(pow((goal.x - 0), 2) + pow((goal.y - 0), 2))
         
-        self.move(3)
+        self.move(1)
+
+        # self.service_set_motor_velocity_left.call(self.left_velocity)
+        # self.service_set_motor_velocity_right.call(self.right_velocity)
+        # self.service_set_motor_position_left.call(3)
+        # self.service_set_motor_position_right.call(3)
+
+
+        self.rotate()
+
+        # self.service_set_motor_velocity_left.call(self.left_velocity)
+        # self.service_set_motor_velocity_right.call(self.right_velocity)
+        # self.service_set_motor_position_left.call(6)
+        # self.service_set_motor_position_right.call(6)
+
+        rospy.logwarn(f'ROTATED')
+        # self.move(0.6)
 
         rospy.spin()
 
@@ -62,7 +84,7 @@ class TiagoController:
         vel_msg.linear.z = 0
         vel_msg.angular.x = 0
         vel_msg.angular.y = 0
-        vel_msg.angular.z = 0
+        vel_msg.angular.z = (self.left_velocity + self.right_velocity) / 2
 
         #Setting the current time for distance calculus
         t0 = rospy.Time.now().to_sec()
@@ -70,6 +92,8 @@ class TiagoController:
 
         #Loop to move the turtle in an specified distance
         
+        # pos_.rx() += std::cos(orient_) * req.linear;
+        # pos_.ry() += - std::sin(orient_) * req.linear;
         rotation = distance / (math.pi * 0.2)
         angle = rotation * 2 * math.pi
         left = self.left_velocity + angle
@@ -100,6 +124,66 @@ class TiagoController:
         
         #Force the robot to stop
         self.velocity_publisher.publish(vel_msg)
+
+    def rotate(self):
+        vel_msg = Twist()
+        vel_msg.linear.x = 0
+        vel_msg.linear.y = 0
+        vel_msg.linear.z = 0
+        vel_msg.angular.x = 0
+        vel_msg.angular.y = 0
+        vel_msg.angular.z = 0
+
+        #Setting the current time for distance calculus
+        t0 = rospy.Time.now().to_sec()
+        current_angle = 0
+
+        #Loop to move the turtle in an specified distance
+
+        x_start = self.left_position
+        y_start = self.right_position
+
+        distance = math.sqrt(pow((x_start + 0.9 - x_start), 2) + pow((y_start - y_start), 2))
+        speed = 1
+        degrees = 6
+        angular_speed = speed*2*math.pi/360
+        relative_angle = degrees*2*math.pi/360
+        vel_msg.angular.z = angular_speed
+
+        rotation = distance / (math.pi * 0.2)
+        angle = rotation * 2 * math.pi
+        left = 0
+        right = speed + angle
+
+        while(current_angle < relative_angle):
+            rospy.logwarn(f'CURRENT: {current_angle}')
+            rospy.logwarn(f'RELATIVE: {relative_angle}')
+
+            self.service_set_motor_velocity_left.call(0)
+            self.service_set_motor_velocity_right.call(speed)
+
+            self.service_set_motor_position_left.call(left)
+            self.service_set_motor_position_right.call(right)
+            
+            #Publish the velocity
+            self.velocity_publisher.publish(vel_msg)
+            
+            #Takes actual time to velocity calculus
+            t1=rospy.Time.now().to_sec()
+            
+            #Calculates distancePoseStamped
+            current_angle = angular_speed*(t1-t0)
+        
+        #After the loop, stops the robot
+        vel_msg.angular.z = 0
+        self.service_set_motor_velocity_left.call(0)
+        self.service_set_motor_velocity_right.call(0)
+        
+        #Force the robot to stop
+        self.velocity_publisher.publish(vel_msg)
+
+        rospy.logwarn(f'CURRENT: {current_angle}')
+        rospy.logwarn(f'RELATIVE: {relative_angle}')
 
 
     def check_for_services(self):
