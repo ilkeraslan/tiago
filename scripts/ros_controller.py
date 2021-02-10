@@ -112,7 +112,7 @@ class TiagoController:
 
 
         current_distance = 0
-        delta_distance = (self.left_position + self.right_position) / 2
+        delta_distance = abs(self.left_position + self.right_position) / 2
         rospy.logerr(f'Delta distance: {delta_distance}')
         rospy.logerr(f'Left post: {self.left_position}')
         rospy.logerr(f'Right post: {self.right_position}')
@@ -168,10 +168,10 @@ class TiagoController:
         relative_angle = np.deg2rad(abs(degrees))
         vel_msg.angular.z = angular_speed
 
-        rospy.logwarn(f'LEFT POSITION: {self.left_position}')
-        rospy.logwarn(f'RIGHT POSITION: {self.right_position}')
-        rospy.logwarn(f'LEFT WHEEL: {left_wheel}')
-        rospy.logwarn(f'RIGHT WHEEL: {right_wheel}')
+        # rospy.logwarn(f'LEFT POSITION: {self.left_position}')
+        # rospy.logwarn(f'RIGHT POSITION: {self.right_position}')
+        # rospy.logwarn(f'LEFT WHEEL: {left_wheel}')
+        # rospy.logwarn(f'RIGHT WHEEL: {right_wheel}')
 
         # rotation = distance / (math.pi * 0.2)
         # angle = rotation * 2 * math.pi
@@ -180,14 +180,12 @@ class TiagoController:
         # rospy.logwarn(f'RIGHT: {right}')
 
         while (rospy.Time.now().to_sec() - t0 < 4):
-            rospy.logwarn(f'CURRENT: {current_angle}')
-            rospy.logwarn(f'RELATIVE: {relative_angle}')
-            rospy.logwarn(f'LEFT POSITION: {self.left_position}')
-            rospy.logwarn(f'RIGHT POSITION: {self.right_position}')
-            rospy.logwarn(f'LEFT WHEEL: {left_wheel}')
-            rospy.logwarn(f'RIGHT WHEEL: {right_wheel}')
-
-            rospy.logwarn('STARTED ROTATING')
+            # rospy.logwarn(f'CURRENT: {current_angle}')
+            # rospy.logwarn(f'RELATIVE: {relative_angle}')
+            # rospy.logwarn(f'LEFT POSITION: {self.left_position}')
+            # rospy.logwarn(f'RIGHT POSITION: {self.right_position}')
+            # rospy.logwarn(f'LEFT WHEEL: {left_wheel}')
+            # rospy.logwarn(f'RIGHT WHEEL: {right_wheel}')
 
             self.service_set_motor_velocity_left.call(1)
             self.service_set_motor_velocity_right.call(1)
