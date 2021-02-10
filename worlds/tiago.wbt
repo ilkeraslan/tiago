@@ -66,7 +66,7 @@ Solid {
   ]
 }
 DEF TIAGO_IRON TiagoIron {
-  translation -1.32 0.095 0
+  translation -0.59 0.095 0
   name "Tiago"
   controller "ros"
   controllerArgs [
@@ -88,7 +88,7 @@ WoodenBox {
   size 0.1 0.1 0.1
 }
 WoodenBox {
-  translation 0.84 0.06 -0.54
+  translation 0.84 0.06 -0.98
   name "wooden box(1)"
   size 0.1 0.1 0.1
 }

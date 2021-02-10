@@ -48,6 +48,17 @@ class TiagoController:
         self.rotate()
         rospy.sleep(2)
         self.move(5, 90)
+        rospy.sleep(2)
+        self.rotate()
+        rospy.sleep(2)
+        self.move(5, 90)
+        self.rotate()
+        rospy.sleep(2)
+        self.move(5, 90)
+        rospy.sleep(2)
+        self.rotate()
+        rospy.sleep(2)
+        self.move(5, 90)
 
         # rospy.logerr(f'LEFT POSITION: {self.left_position}')
         # rospy.logerr(f'RIGHT POSITION: {self.right_position}')
@@ -102,17 +113,24 @@ class TiagoController:
 
         current_distance = 0
         delta_distance = (self.left_position + self.right_position) / 2
+        rospy.logerr(f'Delta distance: {delta_distance}')
+        rospy.logerr(f'Left post: {self.left_position}')
+        rospy.logerr(f'Right post: {self.right_position}')
         t0 = rospy.Time.now().to_sec()
 
         while(current_distance < abs(distance - delta_distance)):
             rospy.logerr(f'DISTANCE: {distance}')
             self.service_set_motor_velocity_left.call(self.left_velocity)
             self.service_set_motor_velocity_right.call(self.right_velocity)
-            self.service_set_motor_position_left.call(distance)
-            self.service_set_motor_position_right.call(distance)
+            self.service_set_motor_position_left.call(self.left_position + distance)
+            self.service_set_motor_position_right.call(self.right_position + distance)
             self.velocity_publisher.publish(vel_msg)
             t1=rospy.Time.now().to_sec()
             current_distance = ((self.left_velocity + self.right_velocity) / 2) * (t1-t0)
+
+            rospy.logerr(f'Target position left: {self.service_get_target_position_left.call()}')
+            rospy.logerr(f'Target position right: {self.service_get_target_position_right.call()}')
+            # self.service_get_motor_position_right.call(self.service_get_motor_position_right.call())
 
         #After the loop, stops the robot
         vel_msg.linear.x = 0
@@ -230,6 +248,8 @@ class TiagoController:
 
         rospy.wait_for_service(self.name + "/wheel_left_joint/set_position")
         rospy.wait_for_service(self.name + "/wheel_right_joint/set_position")
+        # rospy.wait_for_service(self.name + "/wheel_left_joint/get_position")
+        # rospy.wait_for_service(self.name + "/wheel_right_joint/get_position")
 
         rospy.wait_for_service(self.name + "/wheel_right_joint_sensor/enable")
         rospy.wait_for_service(self.name + "/wheel_left_joint_sensor/enable")
@@ -244,6 +264,8 @@ class TiagoController:
 
         self.service_set_motor_position_left = rospy.ServiceProxy(self.name + "/wheel_left_joint/set_position", set_float)
         self.service_set_motor_position_right = rospy.ServiceProxy(self.name + "/wheel_right_joint/set_position", set_float)
+        self.service_get_target_position_left = rospy.ServiceProxy(self.name + "/wheel_left_joint/get_target_position", get_float)
+        self.service_get_target_position_right = rospy.ServiceProxy(self.name + "/wheel_right_joint/get_target_position", get_float)
 
         self.service_accelerometer = rospy.ServiceProxy(self.name + "/accelerometer/enable", set_int)
         self.service_gyro = rospy.ServiceProxy(self.name + "/gyro/enable", set_int)
