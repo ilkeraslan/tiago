@@ -7,6 +7,7 @@ to drive Tiago and stop it before colliding with an obstacle.
 
 import rospy
 import math
+import numpy as np
 from std_msgs.msg import Float64
 from webots_ros.srv import set_float, get_float, set_int, get_int
 from webots_ros.msg import Float64Stamped, BoolStamped
@@ -42,16 +43,29 @@ class TiagoController:
         self.right_velocity = 1
         self.left_position = 0
         self.right_position = 0
-        self.orientation = 0
-        
-        self.move(10)
-        rospy.logerr(f'LEFT POSITION: {self.left_position}')
-        rospy.logerr(f'RIGHT POSITION: {self.right_position}')
+        self.orientation = 0 #0, 90, 180, 270
+
+        self.rotate()
         rospy.sleep(2)
-        self.move(20)
-        rospy.logwarn(f'MOVED')
-        rospy.logerr(f'LEFT POSITION: {self.left_position}')
-        rospy.logerr(f'RIGHT POSITION: {self.right_position}')
+        self.move(5, 90)
+
+        # rospy.logerr(f'LEFT POSITION: {self.left_position}')
+        # rospy.logerr(f'RIGHT POSITION: {self.right_position}')
+        # rospy.sleep(2)
+
+        # self.rotate()
+        # rospy.sleep(2)
+        # rospy.logwarn(f'ROTATED')
+
+        # self.move(10, 90)
+        # rospy.logerr(f'LEFT POSITION: {self.left_position}')
+        # rospy.logerr(f'RIGHT POSITION: {self.right_position}')
+
+        # self.move(20)
+        
+        # rospy.logerr(f'LEFT POSITION: {self.left_position}')
+        # rospy.logerr(f'RIGHT POSITION: {self.right_position}')
+
 
         rospy.spin()
 
@@ -63,88 +77,52 @@ class TiagoController:
         #     self.service_set_motor_velocity_left.call(1)
         #     self.service_set_motor_velocity_right.call(1)
 
-    def move(self, distance):
+    def move(self, distance, orientation):
         vel_msg = Twist()
-        vel_msg.linear.x = (self.left_velocity + self.right_velocity) / 2
+        vel_msg.linear.x = 0
         vel_msg.linear.y = 0
         vel_msg.linear.z = 0
         vel_msg.angular.x = 0
         vel_msg.angular.y = 0
         vel_msg.angular.z = (self.left_velocity + self.right_velocity) / 2
 
+        if (orientation == 0):
+            vel_msg.linear.x = (self.left_velocity + self.right_velocity) / 2
+        elif (orientation == 90):
+            vel_msg.linear.y = (self.left_velocity + self.right_velocity) / 2
+        elif (orientation == 180):
+            vel_msg.linear.x = -((self.left_velocity + self.right_velocity) / 2)
+        elif (orientation == 270):
+            vel_msg.linear.y = -((self.left_velocity + self.right_velocity) / 2)
+        else:
+            vel_msg.linear.x = 0
+            vel_msg.linear.y = 0
+            vel_msg.linear.z = 0
+
+
         current_distance = 0
         delta_distance = (self.left_position + self.right_position) / 2
         t0 = rospy.Time.now().to_sec()
 
         while(current_distance < abs(distance - delta_distance)):
+            rospy.logerr(f'DISTANCE: {distance}')
             self.service_set_motor_velocity_left.call(self.left_velocity)
             self.service_set_motor_velocity_right.call(self.right_velocity)
-
             self.service_set_motor_position_left.call(distance)
             self.service_set_motor_position_right.call(distance)
-            
             self.velocity_publisher.publish(vel_msg)
-            
-            #Takes actual time to velocity calculus
             t1=rospy.Time.now().to_sec()
-
             current_distance = ((self.left_velocity + self.right_velocity) / 2) * (t1-t0)
 
         #After the loop, stops the robot
         vel_msg.linear.x = 0
+        vel_msg.linear.y = 0
+        vel_msg.linear.z = 0
         self.service_set_motor_velocity_left.call(self.left_velocity)
-        self.service_set_motor_velocity_right.call(self.right_velocity)
-        
-        #Force the robot to stop
+        self.service_set_motor_velocity_right.call(self.right_velocity)        
         self.velocity_publisher.publish(vel_msg)
 
-        # #Setting the current time for distance calculus
-        # t0 = rospy.Time.now().to_sec()
-        # current_distance = self.left_position
-        # # new_distance = self.left_position + distance
-        # # rot = distance / (math.pi * 0.2)
-
-        # # pos_.rx() += std::cos(orient_) * req.linear;
-        # # pos_.ry() += - std::sin(orient_) * req.linear;
-        
-        # # rotation = distance / (math.pi * 0.2)
-
-        # new_distance = (self.left_position / 10) + distance
-        # rotation = new_distance / (math.pi * 0.2)
-        # angle = rotation * 2 * math.pi
-        # left = self.left_velocity + angle
-        # right = self.right_velocity + angle
-
-        # # new_distance = (self.left_position / 10) + distance
-        # # angle = new_distance * 10
-        # # left = self.left_velocity + angle
-        # # right = self.right_velocity + angle
-
-        # while(current_distance < ((distance + 0.1) * 10)):
-        #     self.service_set_motor_velocity_left.call(self.left_velocity)
-        #     self.service_set_motor_velocity_right.call(self.right_velocity)
-
-        #     self.service_set_motor_position_left.call(left)
-        #     self.service_set_motor_position_right.call(right)
-            
-        #     #Publish the velocity
-        #     self.velocity_publisher.publish(vel_msg)
-            
-        #     #Takes actual time to velocity calculus
-        #     t1=rospy.Time.now().to_sec()
-
-        #     current_distance = ((self.left_velocity + self.right_velocity) / 2) * (t1-t0)
-        #     first_distance = self.left_position + current_distance
-        #     rospy.logerr(f'CURRENT DISTANCE: {current_distance}')
-        
-        # #After the loop, stops the robot
-        # vel_msg.linear.x = 0
-        # self.service_set_motor_velocity_left.call(self.left_velocity)
-        # self.service_set_motor_velocity_right.call(self.right_velocity)
-        
-        # #Force the robot to stop
-        # self.velocity_publisher.publish(vel_msg)
-
+    
     def rotate(self):
         vel_msg = Twist()
         vel_msg.linear.x = 0
@@ -158,32 +136,46 @@ class TiagoController:
         t0 = rospy.Time.now().to_sec()
         current_angle = 0
 
-        #Loop to move the turtle in an specified distance
-
         x_start = self.left_position
         y_start = self.right_position
 
-        distance = math.sqrt(pow((x_start + 0.9 - x_start), 2) + pow((y_start - y_start), 2))
-        speed = 1
-        degrees = 6
-        angular_speed = speed*2*math.pi/360
-        relative_angle = degrees*2*math.pi/360
+        distance = math.sqrt(pow(2.5, 2) + pow(2.5, 2))
+        left_wheel = self.left_position - distance
+        right_wheel = self.right_position + distance
+
+        # distance = math.sqrt(pow((x_start + 0.9 - x_start), 2) + pow((y_start - y_start), 2))
+        speed = 5
+        degrees = 90
+        angular_speed = np.deg2rad(speed)
+        relative_angle = np.deg2rad(abs(degrees))
         vel_msg.angular.z = angular_speed
 
-        rotation = distance / (math.pi * 0.2)
-        angle = rotation * 2 * math.pi
-        left = 0
-        right = speed + angle
+        rospy.logwarn(f'LEFT POSITION: {self.left_position}')
+        rospy.logwarn(f'RIGHT POSITION: {self.right_position}')
+        rospy.logwarn(f'LEFT WHEEL: {left_wheel}')
+        rospy.logwarn(f'RIGHT WHEEL: {right_wheel}')
 
-        while(current_angle < relative_angle):
+        # rotation = distance / (math.pi * 0.2)
+        # angle = rotation * 2 * math.pi
+        # left = 0
+        # right = speed + angle + 6
+        # rospy.logwarn(f'RIGHT: {right}')
+
+        while (rospy.Time.now().to_sec() - t0 < 4):
             rospy.logwarn(f'CURRENT: {current_angle}')
             rospy.logwarn(f'RELATIVE: {relative_angle}')
+            rospy.logwarn(f'LEFT POSITION: {self.left_position}')
+            rospy.logwarn(f'RIGHT POSITION: {self.right_position}')
+            rospy.logwarn(f'LEFT WHEEL: {left_wheel}')
+            rospy.logwarn(f'RIGHT WHEEL: {right_wheel}')
 
-            self.service_set_motor_velocity_left.call(0)
-            self.service_set_motor_velocity_right.call(speed)
+            rospy.logwarn('STARTED ROTATING')
 
-            self.service_set_motor_position_left.call(left)
-            self.service_set_motor_position_right.call(right)
+            self.service_set_motor_velocity_left.call(1)
+            self.service_set_motor_velocity_right.call(1)
+
+            self.service_set_motor_position_left.call(left_wheel)
+            self.service_set_motor_position_right.call(right_wheel)
             
             #Publish the velocity
             self.velocity_publisher.publish(vel_msg)
@@ -192,7 +184,7 @@ class TiagoController:
             t1=rospy.Time.now().to_sec()
             
             #Calculates distancePoseStamped
-            current_angle = angular_speed*(t1-t0)
+            current_angle = abs(angular_speed)*(t1-t0)
         
         #After the loop, stops the robot
         vel_msg.angular.z = 0
@@ -202,9 +194,29 @@ class TiagoController:
         #Force the robot to stop
         self.velocity_publisher.publish(vel_msg)
 
-        rospy.logwarn(f'CURRENT: {current_angle}')
-        rospy.logwarn(f'RELATIVE: {relative_angle}')
 
+
+    # def rotate(self, angle, speed=100):
+
+    #     vel_msg = Twist()
+
+    #     clockwise = True if angle < 0 else False
+
+    #     # Converting from angles to radians
+    #     relative_angle = np.deg2rad(abs(angle))
+    #     angular_speed = np.deg2rad(speed)
+
+    #     if clockwise:
+    #         angular_speed = -angular_speed
+
+    #     # Setting the current time for distance calculus
+    #     t0 = rospy.Time.now().to_sec()
+    #     current_angle = 0
+
+    #     while not rospy.is_shutdown() and current_angle < relative_angle:
+    #         self.move(0, angular_speed)
+    #         t1 = rospy.Time.now().to_sec()
+            # current_angle = abs(angular_speed)*(t1-t0)
 
     def check_for_services(self):
         rospy.wait_for_service(self.name + "/accelerometer/enable")

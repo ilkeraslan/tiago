@@ -31,8 +31,10 @@ vy = 0
 vth = 0.0
 
 def velocity_callback(res):
-    global vx
+    global vx, vy, vth
     vx = res.linear.x
+    vy = res.linear.y
+    vth = res.linear.z
 
 vel_subscriber = rospy.Subscriber('/foo/cmd_vel', Twist, velocity_callback)
 
