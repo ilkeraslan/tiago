@@ -14,7 +14,6 @@ from webots_ros.srv import set_bool, get_float
 
 rospy.init_node('odometry_publisher')
 
-
 odom_pub = rospy.Publisher("odom", Odometry, queue_size=50)
 odom_broadcaster = tf2_ros.TransformBroadcaster()
 t = geometry_msgs.msg.TransformStamped()
@@ -26,9 +25,14 @@ x = 0.0
 y = 0.0
 th = 0.0
 
-vx = 0
-vy = 0
+vx = 0.0
+vy = 0.0
 vth = 0.0
+
+current_time = rospy.Time.now()
+last_time = rospy.Time.now()
+r = rospy.Rate(10.0)
+r.sleep()
 
 def velocity_callback(res):
     global vx, vy, vth
@@ -38,15 +42,9 @@ def velocity_callback(res):
 
 vel_subscriber = rospy.Subscriber('/foo/cmd_vel', Twist, velocity_callback)
 
-
-current_time = rospy.Time.now()
-last_time = rospy.Time.now()
-r = rospy.Rate(1.0)
-
 while not rospy.is_shutdown():
     current_time = rospy.Time.now()
 
-    # compute odometry in a typical way given the velocities of the robot
     dt = (current_time - last_time).to_sec()
     delta_x = (vx * cos(th) - vy * sin(th)) * dt
     delta_y = (vx * sin(th) + vy * cos(th)) * dt
@@ -88,3 +86,7 @@ while not rospy.is_shutdown():
 
     last_time = current_time
     r.sleep()
+
+
+
+rospy.spin()
