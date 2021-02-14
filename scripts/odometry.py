@@ -18,7 +18,7 @@ odom_pub = rospy.Publisher("odom", Odometry, queue_size=50)
 odom_broadcaster = tf2_ros.TransformBroadcaster()
 t = geometry_msgs.msg.TransformStamped()
 t.header.stamp = rospy.Time.now()
-t.header.frame_id = "world"
+t.header.frame_id = "odom"
 t.child_frame_id = "foo"
 
 x = 0.0
