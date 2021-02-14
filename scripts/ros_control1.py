@@ -37,8 +37,8 @@ class TiagoController:
         self.create_services()
         self.call_services()
 
-        self.left_velocity = 1
-        self.right_velocity = 1
+        self.left_velocity = 2
+        self.right_velocity = 2
         self.left_position = 0
         self.right_position = 0
         self.orientation = 0 #0, 90, 180, 270
@@ -52,12 +52,39 @@ class TiagoController:
         rospy.logerr(f'Right post: {self.right_position}')
         
 
-        self.move(5, 90)
+        self.move(20, 0)
         rospy.sleep(1)
-        self.move(5, 90)
+        self.rotate(90)
         rospy.sleep(1)
-        self.move(5, 90)
+        self.move(20, 90)
         rospy.sleep(1)
+        self.move(7, 90)
+        rospy.sleep(1)
+        self.rotate(270)
+        rospy.sleep(1)
+        self.move(26, 0)
+        rospy.sleep(1)
+        self.move(7, 90)
+        rospy.sleep(1)
+        self.rotate(270)
+        rospy.sleep(1)
+        self.move(28, 270)
+        rospy.sleep(1)
+        self.move(20, 270)
+        rospy.sleep(1)
+        self.move(6, 90)
+        rospy.sleep(1)
+        self.rotate(270)
+        rospy.sleep(1)
+        self.move(28, 180)
+        rospy.sleep(1)
+        self.move(25, 180)
+        rospy.sleep(1)
+        self.rotate(270)
+        rospy.sleep(1)
+        self.move(8, 90)
+        rospy.sleep(1)
+        self.move(20, 180)
 
         rospy.logerr(f'Left post: {self.left_position}')
         rospy.logerr(f'Right post: {self.right_position}')

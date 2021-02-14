@@ -16,29 +16,80 @@ WorldInfo {
   ]
 }
 Viewpoint {
-  orientation 0.4857476184225394 -0.8531161056390593 -0.19037374161390183 5.385335860751455
-  position 5.183790865095322 3.4238492904019737 5.420060023751351
+  orientation -0.10461757937086241 0.949460841998442 0.29593795227748404 2.5182893861651894
+  position 5.144853542605709 5.535792386295236 -6.477797489594785
   follow "Tiago"
 }
 TexturedBackground {
 }
 TexturedBackgroundLight {
 }
-CircleArena {
-  radius 3
-  floorAppearance Parquetry {
-    type "chequered"
-    textureTransform TextureTransform {
-    }
-  }
-  wallThickness 0.05
-  wallAppearance BrushedAluminium {
-    textureTransform TextureTransform {
-    }
-  }
+RectangleArena {
+  floorSize 7 7
+}
+WaterBottle {
+  translation 0.19 0.51 0.16
+  rotation 0 0 1 2.85387e-06
+}
+WaterBottle {
+  translation 0.19 0.51 2.15
+  rotation 0 0 1 2.85387e-06
+  name "water bottle(1)"
+}
+WaterBottle {
+  translation 2.19 0.51 2.15
+  rotation 0 0 1 2.85387e-06
+  name "water bottle(3)"
+}
+WaterBottle {
+  translation 2.19 0.51 0.16
+  rotation 0 0 1 2.85387e-06
+  name "water bottle(4)"
+}
+WaterBottle {
+  translation 2.19 0.51 -1.84
+  rotation 0 0 1 2.85387e-06
+  name "water bottle(5)"
+}
+Wineglass {
+  translation 0 0.51 0.13
+}
+Wineglass {
+  translation 0 0.51 -1.88
+  name "wine glass(1)"
+}
+Wineglass {
+  translation 1.94 0.51 -1.88
+  name "wine glass(2)"
+}
+Wineglass {
+  translation 1.94 0.51 0.12
+  name "wine glass(3)"
+}
+Wineglass {
+  translation 1.94 0.51 2.14
+  name "wine glass(4)"
+}
+Wineglass {
+  translation -0.08 0.51 2.14
+  name "wine glass(5)"
+}
+Wineglass {
+  translation -3.11 0.51 2.14
+  name "wine glass(6)"
+}
+WaterBottle {
+  translation 0.17 0.51 -1.84
+  rotation 0 0 1 2.85387e-06
+  name "water bottle(6)"
+}
+WaterBottle {
+  translation -3 0.51 2.15
+  rotation 0 0 1 2.85387e-06
+  name "water bottle(2)"
 }
 Solid {
-  translation 2.74 0.05 0.51
+  translation 3.32 0.05 3.26
   children [
     Shape {
       appearance Appearance {
@@ -66,29 +117,76 @@ Solid {
   ]
 }
 DEF TIAGO_IRON TiagoIron {
-  translation -0.59 0.095 0
+  translation -2.53 0.095 0
   name "Tiago"
   controller "ros"
   controllerArgs [
     "--name=foo"
   ]
 }
-WoodenBox {
-  translation 0.1 0.05 1.25
-  size 0.1 0.1 0.1
+Plate {
+  translation -2.61 0.9 0
+}
+Plate {
+  translation -3.07 0.51 2.02
+  name "plate(1)"
+}
+Plate {
+  translation 0.03 0.51 2.02
+  name "plate(2)"
+}
+Plate {
+  translation 2.04 0.51 2.02
+  name "plate(3)"
+}
+Plate {
+  translation 2.04 0.51 0
+  name "plate(4)"
+}
+Plate {
+  translation 0.02 0.51 0
+  name "plate(5)"
+}
+Plate {
+  translation 0.02 0.51 -2.01
+  name "plate(6)"
+}
+Plate {
+  translation 2.02 0.51 -2.01
+  name "plate(7)"
 }
 WoodenBox {
-  translation 1.67 0.05 1.47
-  name "wooden box(3)"
-  size 0.1 0.1 0.1
-}
-WoodenBox {
-  translation -2.05 0.05 0.63
+  translation -3.08 0.26 2.01
   name "wooden box(2)"
-  size 0.1 0.1 0.1
+  size 0.5 0.5 0.5
 }
 WoodenBox {
-  translation 0.84 0.06 -0.98
+  translation 0.04 0.26 2.01
+  name "wooden box(3)"
+  size 0.5 0.5 0.5
+}
+WoodenBox {
+  translation 0.04 0.26 0
   name "wooden box(1)"
-  size 0.1 0.1 0.1
+  size 0.5 0.5 0.5
+}
+WoodenBox {
+  translation 0.04 0.26 -2
+  name "wooden box(4)"
+  size 0.5 0.5 0.5
+}
+WoodenBox {
+  translation 2.04 0.26 -2
+  name "wooden box(5)"
+  size 0.5 0.5 0.5
+}
+WoodenBox {
+  translation 2.04 0.26 0.01
+  name "wooden box(6)"
+  size 0.5 0.5 0.5
+}
+WoodenBox {
+  translation 2.04 0.26 2.01
+  name "wooden box(7)"
+  size 0.5 0.5 0.5
 }
