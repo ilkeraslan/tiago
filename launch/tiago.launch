@@ -7,7 +7,7 @@
   <include file="$(find tiago)/launch/webots.launch">
     <arg name="mode" value="realtime"/>
     <arg name="no_gui" value="$(arg no_gui)"/>
-    <arg name="world" value="$(find tiago)/worlds/tiago.wbt"/>
+    <arg name="world" value="$(find tiago)/worlds/myworld.wbt"/>
   </include>
 
   <arg name="auto_close" default="false" doc="Startup mode"/>
@@ -17,7 +17,7 @@
   
   <node name="ros_controller" pkg="tiago" type="ros_controller.py" required="$(arg auto_close)"/>
   <node name="odom" pkg="tiago" type="odometry.py" output="screen"/>
-  <node type="rviz" name="rviz" pkg="rviz" args="-d $(find tiago)/rviz/turtle_rviz.rviz" />
+  <!-- <node type="rviz" name="rviz" pkg="rviz" args="-d $(find tiago)/rviz/turtle_rviz.rviz" /> -->
   <node name="scanners" pkg="tiago" type="scanners.py" output="screen"/>
 
   <!-- Axes -->

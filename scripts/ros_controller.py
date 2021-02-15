@@ -10,7 +10,7 @@ import math
 import numpy as np
 from std_msgs.msg import Float64
 from webots_ros.srv import set_float, get_float, set_int, get_int
-from webots_ros.msg import Float64Stamped, BoolStamped
+from webots_ros.msg import Float64Stamped, BoolStamped, Int32Stamped
 from geometry_msgs.msg import Point, Twist, Vector3
 from turtlesim.msg import Pose
 from nav_msgs.msg import Odometry
@@ -47,50 +47,42 @@ class TiagoController:
         self.bumper_subscriber = rospy.Subscriber(self.name + "/base_cover_link/value", BoolStamped, self.bumper_callback)
         self.left_position_sensor_subscriber = rospy.Subscriber(self.name + '/wheel_left_joint_sensor/value', Float64Stamped, self.position_callback_left) #distanza percorsa dalla ruota sx
         self.right_position_sensor_subscriber = rospy.Subscriber(self.name + '/wheel_right_joint_sensor/value', Float64Stamped, self.position_callback_right)
+        self.keyboard_subscriber = rospy.Subscriber(self.name + "/keyboard/key", Int32Stamped, self.keyboard_callback)
 
         rospy.logerr(f'Left post: {self.left_position}')
         rospy.logerr(f'Right post: {self.right_position}')
         
 
-        self.move(20, 0)
+        # self.move(110, 0)
+        # rospy.sleep(1)
+        # self.rotate(90)
+        # rospy.sleep(1)
+        # self.move(19, 90)
+        # rospy.sleep(1)
+        # self.rotate(270)
+        # rospy.sleep(1)
+        # self.move(20, 0)
+        # rospy.sleep(1)
+
+        rospy.spin()
+
+    def keyboard_callback(self, res):
+        key=res.data
+        if (key == 65):
+            self.move_to_a()
+            rospy.sleep(1)
+
+    def move_to_a(self):
+        self.move(110, 0)
         rospy.sleep(1)
         self.rotate(90)
         rospy.sleep(1)
-        self.move(20, 90)
-        rospy.sleep(1)
-        self.move(7, 90)
+        self.move(19, 90)
         rospy.sleep(1)
         self.rotate(270)
         rospy.sleep(1)
-        self.move(26, 0)
+        self.move(20, 0)
         rospy.sleep(1)
-        self.move(7, 90)
-        rospy.sleep(1)
-        self.rotate(270)
-        rospy.sleep(1)
-        self.move(28, 270)
-        rospy.sleep(1)
-        self.move(20, 270)
-        rospy.sleep(1)
-        self.move(6, 90)
-        rospy.sleep(1)
-        self.rotate(270)
-        rospy.sleep(1)
-        self.move(28, 180)
-        rospy.sleep(1)
-        self.move(25, 180)
-        rospy.sleep(1)
-        self.rotate(270)
-        rospy.sleep(1)
-        self.move(8, 90)
-        rospy.sleep(1)
-        self.move(20, 180)
-
-        rospy.logerr(f'Left post: {self.left_position}')
-        rospy.logerr(f'Right post: {self.right_position}')
-        rospy.sleep(2)
-
-        rospy.spin()
 
 
     def bumper_callback(self, res):
@@ -260,6 +252,10 @@ class TiagoController:
         rospy.wait_for_service(self.name + "/wheel_right_joint_sensor/enable")
         rospy.wait_for_service(self.name + "/wheel_left_joint_sensor/enable")
 
+        rospy.wait_for_service(self.name + "/torso_lift_joint_sensor/enable")
+        rospy.wait_for_service(self.name + "/keyboard/enable")
+        
+
     def create_services(self):
         self.service_set_motor_velocity_left = rospy.ServiceProxy(self.name + "/wheel_left_joint/set_velocity", set_float)
         self.service_set_motor_velocity_right = rospy.ServiceProxy(self.name + "/wheel_right_joint/set_velocity", set_float)
@@ -277,6 +273,8 @@ class TiagoController:
         self.service_inertial = rospy.ServiceProxy(self.name + "/inertial_unit/enable", set_int)
         self.service_lidar = rospy.ServiceProxy(self.name + "/Hokuyo_URG_04LX_UG01/enable", set_int)
         self.service_touch_sensor = rospy.ServiceProxy(self.name + "/base_cover_link/enable", set_int)
+        self.torso_lift_joint_sensor = rospy.ServiceProxy(self.name + "/torso_lift_joint_sensor/enable", set_int)
+        self.keyboard = rospy.ServiceProxy(self.name + "/keyboard/enable", set_int)
 
     def call_services(self):
         self.service_accelerometer.call(10)
@@ -284,6 +282,8 @@ class TiagoController:
         self.service_inertial.call(10)
         self.service_lidar.call(10)
         self.service_touch_sensor.call(10)
+        self.torso_lift_joint_sensor.call(10)
+        self.keyboard.call(10)
         self.service_enable_motor_position_left.call(10)
         self.service_enable_motor_position_right.call(10)
 
