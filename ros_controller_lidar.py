@@ -30,11 +30,10 @@ class TiagoController:
         # value.ranges // 667 elements
         front_distance = min(value.ranges[278:388])
 
-        while(front_distance < 0.4):
-            self.enable_scanners()
+        if(front_distance < 0.4):
             rospy.logerr("new-OBSTACLE")
             isFree = False 
-            rospy.sleep(10)
+            rospy.sleep(5)
             
         isFree = True
 
@@ -67,6 +66,7 @@ class TiagoController:
         self.keyboard_subscriber = rospy.Subscriber(self.name + "/keyboard/key", Int32Stamped, self.keyboard_callback)
         self.scan_publisher_0 = rospy.Publisher(self.name + '/lidar_scan', LaserScan, queue_size=10)
         self.lidar_sub = rospy.Subscriber(self.name + '/Hokuyo_URG_04LX_UG01/laser_scan/layer0', LaserScan, self.callback)
+
         rospy.logerr(f'Left post: {self.left_position}')
         rospy.logerr(f'Right post: {self.right_position}')
         
@@ -90,10 +90,6 @@ class TiagoController:
         if (key == 65):
             self.move_to_a()
             rospy.sleep(1)
-
-
-    def enable_scanners(self):
-        rospy.Subscriber(self.name + '/Hokuyo_URG_04LX_UG01/laser_scan/layer0', LaserScan, self.callback)
 
     def move_to_a(self):
         self.move(110, 0)
