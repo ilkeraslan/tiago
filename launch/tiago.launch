@@ -15,7 +15,7 @@
   <env name="PYTHONPATH" value="$(env PYTHONPATH):$(env WEBOTS_HOME)/lib/controller/python27" unless="$(eval '1' if env('ROS_DISTRO') == 'noetic' else '0')" />
   <env name="PYTHONPATH" value="$(env PYTHONPATH):$(env WEBOTS_HOME)/lib/controller/python38" if="$(eval '1' if env('ROS_DISTRO') == 'noetic' else '0')" />
   
-  <node name="ros_controller" pkg="tiago" type="ros_controller_lidar.py" required="$(arg auto_close)"/>
+  <node name="ros_controller" pkg="tiago" type="ros_controller.py" required="$(arg auto_close)"/>
   <node name="odom" pkg="tiago" type="odometry.py" output="screen"/>
   <!-- <node type="rviz" name="rviz" pkg="rviz" args="-d $(find tiago)/rviz/turtle_rviz.rviz" /> -->
   <!-- <node name="scanners" pkg="tiago" type="scanners.py" output="screen"/> -->

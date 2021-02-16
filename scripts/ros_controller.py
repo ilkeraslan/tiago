@@ -31,14 +31,11 @@ class TiagoController:
         front_distance = min(value.ranges[278:388])
 
         if(front_distance < 0.3):
-            rospy.logerr("new-OBSTACLE")
-            isFree = False
-            
+            isFree = False            
         else:    
             isFree = True
 
     
-        
     def __init__(self, node_name):
         rospy.init_node('controller', anonymous=True)
 
@@ -71,43 +68,53 @@ class TiagoController:
         rospy.logerr(f'Right post: {self.right_position}')
         
 
-        # self.move(30, 0)
+        # self.rotate(90,True)
         # rospy.sleep(1)
-        # self.rotate_sx(90)
+        # self.move(65, 0)
         # rospy.sleep(1)
-        # self.move(19, 90)
+        # self.rotate(90,False)
         # rospy.sleep(1)
-        # self.rotate(270)
+        # self.move(10, 0)
         # rospy.sleep(1)
-        # self.move(20, 0)
+        # self.rotate(90,False)
         # rospy.sleep(1)
-        # self.goalRaggiunto()
-        self.rotate(90,True)
-        rospy.sleep(1)
-        self.rotate(90, True)
-        rospy.sleep(1)
+        # self.move(19, 0)
+        # rospy.sleep(1)
+        # self.rotate(90,True)
+        # rospy.sleep(1)
+        # self.move(25, 0)
+        # rospy.sleep(1)
+        # self.move(25, 0)
+
+        rospy.spin()
+
+    def go_to_kitchen(self):
         self.rotate(180, False)
         rospy.sleep(1)
-        self.move(19, 0)
+        self.move(12, 0)
         rospy.sleep(1)
-        self.rotate(90,True)
+        self.rotate(90, True)
+        self.move(65, 0)
         rospy.sleep(1)
-        self.move(20, 0)
+        self.rotate(90, False)
         rospy.sleep(1)
-        self.goalRaggiunto()
-        rospy.sleep(1)
-        self.rotate(0, True)
-        rospy.sleep(1)
-        self.rotate(0, False)
-        rospy.sleep(1)
-        self.move(10,0)
-        rospy.spin()
 
     def keyboard_callback(self, res):
         key=res.data
         if (key == 65):
-            self.move_to_a()
+            self.go_to_kitchen()
+            self.move(19, 0)
             rospy.sleep(1)
+            self.rotate(90, False)
+            rospy.sleep(1)
+            self.move(15, 270)
+            rospy.sleep(1)
+            self.rotate(90, True)
+            rospy.sleep(1)
+            self.move(17, 0)
+            rospy.sleep(1)
+        elif (key == 90):
+            self.move_to_entrance_from_a()
 
     def move_to_a(self):
         self.move(110, 0)
@@ -119,6 +126,20 @@ class TiagoController:
         self.rotate(270)
         rospy.sleep(1)
         self.move(20, 0)
+        rospy.sleep(1)
+
+    def move_to_entrance_from_a(self):
+        self.rotate(180, False)
+        rospy.sleep(1)
+        self.move(22, 0)
+        rospy.sleep(1)
+        self.rotate(90, True)
+        rospy.sleep(1)
+        self.move(49, 90)
+        rospy.sleep(1)
+        self.rotate(90, False)
+        rospy.sleep(1)
+        self.move(28, 0)
         rospy.sleep(1)
 
     def move(self, distance, orientation):
@@ -217,13 +238,13 @@ class TiagoController:
             isBumped=False
         
 
-    def goalRaggiunto(self):
+    def serve(self):
         self.service_set_torso_position(0.2)
         rospy.sleep(5)
         self.service_set_torso_position(0)
         rospy.sleep(5)
 
-    def rotate(self, angle,clockwise):
+    def rotate(self, angle, clockwise):
         global x, y, yaw
         yaw0 = yaw
         vel_msg = Twist()
@@ -235,25 +256,25 @@ class TiagoController:
         vel_msg.angular.z = 1
 
         # distanza che devono percorrere le ruote per compiere 90 gradi = 3.48 calcolato sperimentalmente
-        distance90 = 3.48 
+        distance90 = 3.525 
         distance = 0
 
         if angle == 45:
-            distance = distance90/2 -0.01
+            distance = distance90/2
         elif angle == 90:
             distance = distance90
         elif angle == 135:
-            distance = distance90 + distance90/2 + 0.01
+            distance = distance90 + distance90/2
         elif angle == 180:
-            distance = distance90*2 +0.02*2 -0.01
+            distance = distance90*2 +0.02*2
         elif angle == 225:
-            distance = distance90*2 + distance90/2 +0.025*2 - 0.01
+            distance = distance90*2 + distance90/2 +0.025*2
         elif angle == 270:
-            distance = distance90*3 +0.03*3 -0.01
+            distance = distance90*3 + 0.03*3
         elif angle == 315:
-            distance = distance90*3 + distance90/2 + 0.035*3 - 0.01
+            distance = distance90*3 + distance90/2 + 0.035*3
         elif angle == 0:
-            distance = (distance90 + 0.04)*4 -0.02
+            distance = (distance90 + 0.04)*4
         else: 
             rospy.logerr(f'angolo non accettato: {angle}' )
 

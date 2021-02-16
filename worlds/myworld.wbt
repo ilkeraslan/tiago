@@ -1,16 +1,17 @@
-#VRML_SIM R2021a utf8
+#VRML_SIM R2020b utf8
 WorldInfo {
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation -0.0069582381394560355 0.9400719945922303 0.3409050130247139 3.085353297401489
-  position -0.3209937817303512 21.54947360362142 -25.5602578953378
+  orientation 0.006842071333575007 0.9245474404886174 0.38100553322204206 3.1588128752792923
+  position -3.0392305116930567 17.88754985540887 -19.201013825676064
 }
 Background {
 }
 DEF TIAGO_IRON TiagoIron {
-  translation -6.25 0.0949815 -5.62
-  rotation 0.5773509358554485 0.5773509358554485 0.5773489358556708 -2.094395307179586
+  hidden rotation_13 1 6.166219992697644e-11 -6.166242642530224e-11 1.5707999999999998
+  translation 0 0 -6.5
+  rotation -0.5773512691895147 0.5773502691890485 0.5773492691885823 2.0944
   name "Tiago"
   controller "ros"
   controllerArgs [
@@ -38,9 +39,6 @@ FloorLight {
 }
 RectangleArena {
   floorSize 20 20
-  floorAppearance Parquetry {
-    type "light strip"
-  }
   wallThickness 0.1
   wallHeight 0.5
 }
