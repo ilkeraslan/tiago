@@ -68,52 +68,55 @@ class TiagoController:
         rospy.logerr(f'Left post: {self.left_position}')
         rospy.logerr(f'Right post: {self.right_position}')
         
-
-        # self.rotate(90,True)
-        # rospy.sleep(1)
-        # self.move(65, 0)
-        # rospy.sleep(1)
-        # self.rotate(90,False)
+        self.go_to_kitchen()
+        self.kitchen_to_C()
+        self.C_to_K()
+        # self.rotate(180, False)
         # rospy.sleep(1)
         # self.move(10, 0)
         # rospy.sleep(1)
-        # self.rotate(90,False)
+        # self.rotate(90, True)
+        # self.move(10, 90)
         # rospy.sleep(1)
-        # self.move(19, 0)
+        # self.rotate(90, False)
         # rospy.sleep(1)
-        # self.rotate(90,True)
+        # self.move(10, 90)
         # rospy.sleep(1)
-        # self.move(25, 0)
+        # self.rotate(90, True)
         # rospy.sleep(1)
-        # self.move(25, 0)
+        # self.move(10, 90)
+        # rospy.sleep(1)
 
         rospy.spin()
 
     def go_to_kitchen(self):
         self.rotate(180, False)
         rospy.sleep(1)
-        self.move(12, 0)
+        self.move(10, 0)
         rospy.sleep(1)
         self.rotate(90, True)
-        self.move(65, 0)
+        self.move(65, 90)
         rospy.sleep(1)
         self.rotate(90, False)
+        rospy.sleep(1)
+    
+    def kitchen_to_A(self):
+        self.move(10, 0)
+        rospy.sleep(1)
+        self.rotate(90, False)
+        rospy.sleep(1)
+        self.move(15, 270)
+        rospy.sleep(1)
+        self.rotate(90, True)
+        rospy.sleep(1)
+        self.move(25, 0)
         rospy.sleep(1)
 
     def keyboard_callback(self, res):
         key = res.data
         if (key == 65 and key is not self.last_command):
             self.go_to_kitchen()
-            self.move(19, 0)
-            rospy.sleep(1)
-            self.rotate(90, False)
-            rospy.sleep(1)
-            self.move(15, 270)
-            rospy.sleep(1)
-            self.rotate(90, True)
-            rospy.sleep(1)
-            self.move(17, 0)
-            rospy.sleep(1)
+            
         elif (key == 90):
             self.move_to_entrance_from_a()
         
@@ -132,17 +135,60 @@ class TiagoController:
         rospy.sleep(1)
 
     def move_to_entrance_from_a(self):
-        self.rotate(180, False)
+        self.rotate(90, False)
         rospy.sleep(1)
-        self.move(22, 0)
+        self.move(20, 180)
         rospy.sleep(1)
         self.rotate(90, True)
         rospy.sleep(1)
-        self.move(49, 90)
+        self.move(40, 270)
         rospy.sleep(1)
         self.rotate(90, False)
         rospy.sleep(1)
-        self.move(28, 0)
+        self.move(25, 180)
+        rospy.sleep(1)
+
+    def kitchen_to_B(self):
+        self.kitchen_to_A()
+        self.move(40,0)
+        rospy.sleep(1)
+
+    def kitchen_to_G(self):
+        self.move(10, 0)
+        rospy.sleep(1)
+        self.rotate(90, False)
+        rospy.sleep(1)
+        self.move(50, 270)
+        rospy.sleep(1)
+        self.rotate(90, True)
+        rospy.sleep(1)
+        self.move(15, 0)
+        rospy.sleep(1)
+
+    def kitchen_to_H(self):
+        self.kitchen_to_G()
+        self.move(40,0)
+        rospy.sleep(1)
+
+    def kitchen_to_C(self):
+        self.kitchen_to_H()
+        self.move(45,0)
+        rospy.sleep(1)
+           
+    def C_to_K(self):
+        self.move(45,180)
+        rospy.sleep(1)
+        self.move(40,180)
+        rospy.sleep(1)
+        self.move(15, 180)
+        rospy.sleep(1)
+        self.rotate(90, False)
+        rospy.sleep(1)
+        self.move(25, 90)
+        rospy.sleep(1)
+        self.rotate(90, True)
+        rospy.sleep(1)
+        self.move(10, 180)
         rospy.sleep(1)
 
     def move(self, distance, orientation):
@@ -241,7 +287,17 @@ class TiagoController:
             isBumped=False
         
 
-    def serve(self):
+    def serve_dx(self):
+        self.rotate(90,False)
+        rospy.sleep(1)
+        self.service_set_torso_position(0.2)
+        rospy.sleep(5)
+        self.service_set_torso_position(0)
+        rospy.sleep(5)
+
+    def serve_sx(self):
+        self.rotate(90,True)
+        rospy.sleep(1)
         self.service_set_torso_position(0.2)
         rospy.sleep(5)
         self.service_set_torso_position(0)
@@ -259,25 +315,43 @@ class TiagoController:
         vel_msg.angular.z = 1
 
         # distanza che devono percorrere le ruote per compiere 90 gradi = 3.48 calcolato sperimentalmente
-        distance90 = 3.525 
-        distance = 0
+        distance_not_clockwise_90 = 3.53
+        distance_not_clockwise = 0
+        distance_clockwise_90 = 3.503
+        distance_clockwise = 0
 
         if angle == 45:
-            distance = distance90/2
+            distance_not_clockwise = distance_not_clockwise_90/2
+            distance_clockwise = distance_clockwise_90/2
+
         elif angle == 90:
-            distance = distance90
+            distance_not_clockwise = distance_not_clockwise_90 -0.115
+            distance_clockwise = distance_clockwise_90-0.003
+
         elif angle == 135:
-            distance = distance90 + distance90/2
+            distance_not_clockwise = distance_not_clockwise_90 + distance_not_clockwise_90/2
+            distance_clockwise =distance_clockwise_90 + distance_clockwise_90/2
+
         elif angle == 180:
-            distance = distance90*2 +0.02*2
+            distance_not_clockwise = distance_not_clockwise_90*2 +0.02*2
+            distance_clockwise = distance_clockwise_90*2 +0.02*2
+
         elif angle == 225:
-            distance = distance90*2 + distance90/2 +0.025*2
+            distance_not_clockwise = distance_not_clockwise_90*2 + distance_not_clockwise_90/2 +0.025*2
+            distance_clockwise = distance_clockwise_90*2 + distance_clockwise_90/2 +0.025*2
+
         elif angle == 270:
-            distance = distance90*3 + 0.03*3
+            distance_not_clockwise = distance_not_clockwise_90*3 + 0.03*3
+            distance_clockwise = distance_clockwise_90*3 + 0.03*3
+
         elif angle == 315:
-            distance = distance90*3 + distance90/2 + 0.035*3
+            distance_not_clockwise = distance_not_clockwise_90*3 + distance_not_clockwise_90/2 + 0.035*3
+            distance_clockwise = distance_clockwise_90*3 + distance_clockwise_90/2 + 0.035*3
+
         elif angle == 0:
-            distance = (distance90 + 0.04)*4
+            distance_not_clockwise = (distance_not_clockwise_90 + 0.04)*4
+            distance_clockwise = (distance_clockwise_90 + 0.04)*4
+
         else: 
             rospy.logerr(f'angolo non accettato: {angle}' )
 
@@ -288,13 +362,13 @@ class TiagoController:
         left = self.left_position
         
         if (clockwise==True):
-            left_condition = left + distance
-            right_condition = right - distance
+            left_condition = left + distance_clockwise
+            right_condition = right - distance_clockwise
 
             while (left_dist < left_condition and right_dist > right_condition):
 
-                    self.service_set_motor_velocity_left.call(1)
-                    self.service_set_motor_velocity_right.call(1)
+                    self.service_set_motor_velocity_left.call(0.8)
+                    self.service_set_motor_velocity_right.call(0.8)
 
                     self.service_set_motor_position_left.call(left_condition)
                     self.service_set_motor_position_right.call(right_condition)
@@ -310,8 +384,8 @@ class TiagoController:
             
         
         else: 
-            left_condition = left - distance
-            right_condition = distance + right
+            left_condition = left - distance_not_clockwise
+            right_condition = distance_not_clockwise + right
 
             while (left_dist > left_condition and right_dist < right_condition):
 
