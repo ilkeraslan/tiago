@@ -1,17 +1,16 @@
-#VRML_SIM R2020b utf8
+#VRML_SIM R2021a utf8
 WorldInfo {
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation 0.006842071333575007 0.9245474404886174 0.38100553322204206 3.1588128752792923
-  position -3.0392305116930567 17.88754985540887 -19.201013825676064
+  orientation 0.014812467430212537 0.9553637696703074 0.2950604317931647 3.2168093558392212
+  position -2.5951851905096666 18.24731640202702 -23.668272239204313
 }
 Background {
 }
 DEF TIAGO_IRON TiagoIron {
-  hidden rotation_13 1 6.166219992697644e-11 -6.166242642530224e-11 1.5707999999999998
-  translation 0 0 -6.5
-  rotation -0.5773512691895147 0.5773502691890485 0.5773492691885823 2.0944
+  translation 0 0 -1.5
+  rotation -0.5773503304350883 0.5773503304350883 0.5773501466986812 2.094395010525004
   name "Tiago"
   controller "ros"
   controllerArgs [
@@ -23,256 +22,230 @@ DirectionalLight {
   direction 1000 1000 1000
   intensity 2
 }
-FloorLight {
-  translation -4.27444 1.87406e-13 -10.633
-  rotation 0 0 1 4.692820414042842e-06
-}
-FloorLight {
-  translation 4.31809 1.83853e-13 -10.3628
-  rotation 0 0 1 4.692820414042842e-06
-  name "floor light(2)"
-}
-FloorLight {
-  translation -4.27444 1.87406e-13 -10.633
-  rotation 0 0 1 4.692820414042842e-06
-  name "floor light(1)"
-}
 RectangleArena {
-  floorSize 20 20
-  wallThickness 0.1
+  floorSize 13 13
   wallHeight 0.5
+  wallAppearance BrushedAluminium {
+    colorOverride 0.933333 0.933333 0.92549
+  }
+}
+Television {
+  translation 4 1.5 -3.6
+  rotation 0 1 0 -3.141592653589793
+}
+Carpet {
+  translation 3.8 0 -5
+  color 0 0 0
+}
+Sofa {
+  translation 5.7 0 -5
+  rotation 0 1 0 3.141592653589793
+  name "sofa(4)"
 }
 Mirror {
-  translation -7.2 1.2 9.9
+  translation -4.9 1.2 6.4
   rotation 0 1 0 3.141592653589793
-  width 4
+  width 2.6
   height 0.9
   frameAppearance VarnishedPine {
     colorOverride 0.929412 0.831373 0
   }
 }
 BathroomSink {
-  translation -5.9 1.1 9.9
+  translation -4.4 1.1 6.4
   name "sink(1)"
 }
 BathroomSink {
-  translation -9 1.1 9.9
-  name "sink(2)"
-}
-BathroomSink {
-  translation -7.5 1.1 9.9
+  translation -5.7 1.1 6.4
   name "sink(3)"
 }
 Toilet {
-  translation -7.5 0 5.7
+  translation -4.3 0 3.6
 }
 Toilet {
-  translation -5.87 0 5.7
+  translation -5.8 0 3.6
   name "toilet(2)"
 }
-Toilet {
-  translation -9.22114 -7.10543e-15 5.73896
-  name "toilet(1)"
-}
 OfficeTelephone {
-  translation -3.14 0.82 -9.7
+  translation -1.7 0.82 -3.3
   rotation 0 1 0 -1.5708003061004252
 }
 OfficeChair {
-  translation -3.57069 0.01 -9.13236
+  translation -2.1 0.01 -2.9
   rotation 0 1 0 1.57
 }
 Oven {
-  translation -9.5 0.35 -8.69
+  translation -3.9 0.35 -3.2
 }
 Pedestrian {
-  translation -6.42789 1.27 -7.11409
+  translation -3.9 1.27 -2.1
 }
 PalmTree {
-  translation 12.756 3.55271e-15 12.5276
+  translation 9.5 0 9.5
   name "palm tree(4)"
 }
-Bench {
-  translation -2.89289 1.06138e-06 -10.4589
-  rotation -2.6535899999906573e-06 0.9999999999964793 -2.754909999990301e-13 3.14159
-}
-Bench {
-  translation 2.83992 3.1606e-21 -10.5574
-  rotation -2.6535899999906573e-06 0.9999999999964793 -2.754909999990301e-13 3.14159
-  name "bench(1)"
-}
 Fridge {
-  translation -9.48912 0 -9.55036
+  translation -6 0 -3.2
+  rotation 0 1 0 -1.5707996938995747
 }
 HotPlate {
-  translation -9.55 0.71 -8.6
+  translation -3.9 0.71 -3.1
 }
 Door {
-  translation -9.05 0 -6
+  translation -5.7 0 -1.4
   name "door(1)"
   size 1 2.4 0.1
 }
 Wall {
-  translation -7.2 0 10
+  translation -3.5 0 6.5
   name "wall(5)"
-  size 5.4 2.4 0.1
+  size 6 2.4 0.1
 }
 Wall {
-  translation -9.8 0 -6
-  name "wall(11)"
-  size 0.5 2.4 0.1
-}
-Wall {
-  translation -8.3 0 -6
+  translation -5 0 -1.4
   name "wall(13)"
-  size 0.5 2.4 0.1
+  size 0.4 2.4 0.1
 }
 Wall {
-  translation -6.8 0 -6
+  translation -6.3 0 -1.4
+  name "wall(19)"
+  size 0.3 2.4 0.1
+}
+Wall {
+  translation -4.3 0 -1.4
   name "wall(14)"
   size 2.7 0.8 0.1
 }
 Wall {
-  translation -3 0 -9.2
+  translation -1.7 0 -2.9
   rotation 0 1 0 -1.5707953071795862
   name "wall(16)"
-  size 1.5 0.8 0.1
+  size 1.3 0.8 0.1
 }
 Wall {
-  translation -6.8 1.7 -6
+  translation -4.3 1.7 -1.4
   name "wall(15)"
   size 2.7 0.7 0.1
 }
 Wall {
-  translation -4.7 0 -6
+  translation -2.7 0 -1.4
   name "wall(12)"
-  size 1.5 2.4 0.1
+  size 0.5 2.4 0.1
 }
 Wall {
-  translation -8.38 0 7.35
-  name "wall(2)"
-  size 0.7 2.4 0.1
+  translation -4.95 0 3.1
+  name "wall(22)"
+  size 3 2.4 0.1
 }
 Wall {
-  translation -9.84 0 7.35
-  name "wall(24)"
+  translation -3.6 0 4.9
+  name "wall(11)"
   size 0.3 2.4 0.1
 }
 Wall {
-  translation -5.2 0 7.35
-  name "wall(25)"
-  size 0.4 2.4 0.1
-}
-Wall {
-  translation -6.72 0 7.35
+  translation -6.4 0 4.9
   name "wall(23)"
-  size 0.75 2.4 0.1
+  size 0.3 2.4 0.1
 }
 Wall {
-  translation -7.5 0 5.2
-  name "wall(22)"
-  size 5 2.4 0.1
+  translation -5 0 4.9
+  name "wall(24)"
+  size 0.6 2.4 0.1
 }
 Wall {
-  translation -3.5 0 10
-  name "wall(18)"
+  translation 5.5 0 6.5
+  name "wall(34)"
   size 2 2.4 0.1
 }
 Wall {
-  translation 9.2 0 10
-  name "wall(4)"
-  size 1.5 2.4 0.1
-}
-Wall {
-  translation 2.75 0 -10
+  translation 1.25 0 -6.5
   name "wall(7)"
-  size 3.5 2.4 0.1
+  size 0.5 2.4 0.1
 }
 Wall {
-  translation -2.76 0 -10
-  name "wall(8)"
-  size 3.5 2.4 0.1
+  translation -1.25 0 -6.5
+  name "wall(32)"
+  size 0.5 2.4 0.1
 }
 Wall {
-  translation 9.2 0 -10
-  name "wall(6)"
-  size 1.5 2.4 0.1
+  translation 6 0 -6.5
+  name "wall(25)"
+  size 1 2.4 0.1
 }
 Wall {
-  translation -9.2 0 -10
-  name "wall(9)"
-  size 1.5 2.4 0.1
+  translation -6 0 -6.5
+  name "wall(31)"
+  size 1 2.4 0.1
 }
 Wall {
-  translation -10 0 0
+  translation -5.75 0 -6.5
+  name "wall(29)"
+  size 0.5 2.4 0.1
+}
+Wall {
+  translation -3.8 0 -3.5
+  name "wall(28)"
+  size 5.5 2.4 0.1
+}
+Wall {
+  translation 3.7 0 -3.5
+  name "wall(30)"
+  size 5.5 2.4 0.1
+}
+Wall {
+  translation -6.5 0 0
   rotation 0 -1 0 1.5707963267948968
   name "wall(1)"
-  size 20 2.4 0.1
+  size 13 2.4 0.1
 }
 FireExtinguisher {
-  translation -2 1 -9.85
+  translation -1.3 1.3 -6.36
 }
 Wall {
-  translation -4 0 -8
+  translation -2.5 0 -2.4
   rotation 0 -1 0 1.5707963267948968
   name "wall(10)"
-  size 4 2.4 0.1
+  size 2 2.4 0.1
 }
 Wall {
-  translation -6.69601 0 6.3
+  translation -2.1 0 5.2
   rotation 0 -1 0 1.5707963267948968
   name "wall(17)"
-  size 2.2 2.4 0.1
+  size 2.5 2.4 0.1
 }
 Wall {
-  translation -5.03 0 6.3
+  translation -5 0 4
   rotation 0 -1 0 1.5707963267948968
   name "wall(21)"
-  size 2.2 2.4 0.1
+  size 1.8 2.4 0.1
 }
 Wall {
-  translation -8.3 0 6.3
+  translation -3.5 0 4
   rotation 0 -1 0 1.5707963267948968
   name "wall(20)"
-  size 2.2 2.4 0.1
+  size 1.8 2.4 0.1
 }
 Door {
-  translation -5.86 0 7.35
+  translation -4.2 0 4.9
   name "door(2)"
   size 1 2.4 0.1
 }
 DoubleFluorescentLamp {
-  translation -7.6 2.4 6.3
+  translation -5.8 2.4 4
   rotation 1 0 0 3.14
 }
 DoubleFluorescentLamp {
-  translation -9.2 2.4 6.3
-  rotation 1 0 0 3.14
-  name "double fuorescent lamp(2)"
-}
-DoubleFluorescentLamp {
-  translation -5.9 2.4 6.3
+  translation -4.3 2.4 4
   rotation 1 0 0 3.14
   name "double fuorescent lamp(1)"
 }
 Door {
-  translation -7.58 0 7.35
+  translation -5.8 0 4.9
   name "door(4)"
   size 1 2.4 0.1
 }
 Door {
-  translation -9.22125 0 7.35
-  name "door(3)"
-  size 1 2.4 0.1
-}
-Wall {
-  translation -3.5 0 7.9
-  rotation 0 -1 0 1.5707963267948968
-  name "wall(19)"
-  size 4 2.4 0.1
-}
-Door {
-  translation 0 0 -10
+  translation 0 0 -6.5
   rotation 0 1 0 3.14159
   size 2 2.4 0.1
   doorAppearance GenericDoorAppearance {
@@ -280,225 +253,138 @@ Door {
   }
 }
 Wall {
-  translation 10 0 -8.5
+  translation 6.5 0 -4
   rotation 0 -1 0 1.5707963267948968
   name "wall(3)"
-  size 3 2.4 0.1
+  size 5 2.4 0.1
 }
 Wall {
-  translation 10 0 8.5
+  translation 6.5 0 5.5
   rotation 0 -1 0 1.5707963267948968
-  name "wall(27)"
-  size 3 2.4 0.1
-}
-Wall {
-  translation 10 0 0
-  rotation 0 -1 0 1.5707963267948968
-  name "wall(26)"
+  name "wall(33)"
   size 2 2.4 0.1
 }
 Chair {
-  translation 0.38 0 1.5
+  translation 1.1 0 0.2
   rotation 0 1 0 -1.5707953071795862
   name "chair(10)"
 }
 Chair {
-  translation -6 0 1.5
+  translation -4 0 0.3
   rotation 0 1 0 -1.5707953071795862
   name "chair(6)"
 }
 Chair {
-  translation -6 0 -2.5
-  rotation 9.5898e-09 1 9.58979e-09 -1.5707953071795862
-  name "chair(31)"
-}
-Chair {
-  translation -0.5 0 -2.5
-  rotation 9.5898e-09 1 9.58979e-09 -1.5707953071795862
-  name "chair(35)"
-}
-Chair {
-  translation 0.5 0 -2.5
-  rotation 0 1 0 -1.5707953071795862
-  name "chair(36)"
-}
-Chair {
-  translation -7 0 -2.5
-  rotation 0 1 0 -1.5707953071795862
-  name "chair(32)"
-}
-Chair {
-  translation -6.9 0 1.5
+  translation -4.9 0 0.3
   rotation 9.5898e-09 1 9.58979e-09 -1.5707953071795862
   name "chair(29)"
 }
 Chair {
-  translation -0.43 0 1.5
+  translation 0.2 0 0.2
   rotation 0 1 0 -1.5707953071795862
   name "chair(12)"
 }
 Chair {
-  translation 0.4 0 6.3
+  translation 1.1 0 4
   rotation 0 1 0 -1.5707953071795862
   name "chair(9)"
 }
 Chair {
-  translation -0.4 0 6.3
+  translation 0.2 0 4
   rotation 0 1 0 -1.5707953071795862
   name "chair(33)"
 }
 Chair {
-  translation 5.3 0 -0.6
+  translation 3.5 0 -1.2
   name "chair(18)"
 }
 Chair {
-  translation 5.3 0 0.6
+  translation 3.5 0 0.8
   name "chair(19)"
 }
 Chair {
-  translation 5.3 0 1.8
+  translation 3.5 0 -0.2
   name "chair(4)"
 }
 Chair {
-  translation 5.3 0 -1.8
+  translation 3.5 0 1.8
   name "chair(21)"
 }
 Chair {
-  translation 6.9 0 1.8
+  translation 4.9 0 -0.2
   rotation 0 1 0 -3.1415853071795863
   name "chair(24)"
 }
 Chair {
-  translation 6.9 0 0.6
+  translation 4.9 0 0.8
   rotation 0 1 0 -3.1415853071795863
   name "chair(13)"
 }
 Chair {
-  translation 6.9 0 -0.6
+  translation 4.9 0 -1.2
   rotation 0 1 0 -3.1415853071795863
   name "chair(20)"
 }
 Chair {
-  translation 6.9 0 -1.8
+  translation 4.9 0 1.8
   rotation 0 1 0 -3.1415853071795863
   name "chair(23)"
 }
 Chair {
-  translation 5.5 0 6.3
+  translation 3.7 0 4
   rotation 0 1 0 -1.5707953071795862
   name "chair(17)"
 }
 Chair {
-  translation 5.5 0 -7.2
-  rotation 0 1 0 -1.5707953071795862
-  name "chair(5)"
-}
-Chair {
-  translation 6.5 0 -7.2
-  rotation 0 1 0 -1.5707953071795862
-  name "chair(7)"
-}
-Chair {
-  translation 6.5 0 6.3
+  translation 4.7 0 4
   rotation 0 1 0 -1.5707953071795862
   name "chair(1)"
 }
 Chair {
-  translation 0.4 0 2.9
+  translation 1.1 0 1.6
   rotation 0 1 0 1.5708
   name "chair(3)"
 }
 Chair {
-  translation -0.5 0 2.9
+  translation 0.2 0 1.6
   rotation 0 1 0 1.5708
   name "chair(15)"
 }
 Chair {
-  translation -0.5 0 -1
-  rotation 0 1 0 1.5708
-  name "chair(28)"
-}
-Chair {
-  translation 0.5 0 -1
-  rotation 0 1 0 1.5708
-  name "chair(34)"
-}
-Chair {
-  translation -6 0 2.9
+  translation -4 0 1.7
   rotation 0 1 0 1.5708
   name "chair(14)"
 }
 Chair {
-  translation -6 0 -1.1
-  rotation 0 1 0 1.5708
-  name "chair(27)"
-}
-Chair {
-  translation -7 0 -1.1
-  rotation 0 1 0 1.5708
-  name "chair(30)"
-}
-Chair {
-  translation -6.9 0 2.9
+  translation -4.9 0 1.7
   rotation 0 1 0 1.5708
   name "chair(16)"
 }
 Chair {
-  translation -0.5 0 7.7
+  translation 0.2 0 5.4
   rotation 0 1 0 1.5708
   name "chair(26)"
 }
 Chair {
-  translation 0.4 0 7.7
+  translation 1.1 0 5.4
   rotation 0 1 0 1.5708
   name "chair(11)"
 }
 Chair {
-  translation 6.5 0 7.7
+  translation 4.7 0 5.4
   rotation 0 1 0 1.5708
   name "chair(25)"
 }
 Chair {
-  translation 6.5 0 -5.8
-  rotation 0 1 0 1.5708
-  name "chair(8)"
-}
-Chair {
-  translation 5.5 0 -5.8
-  rotation 0 1 0 1.5708
-  name "chair(22)"
-}
-Chair {
-  translation 5.5 0 7.7
+  translation 3.7 0 5.4
   rotation 0 1 0 1.5708
   name "chair(2)"
 }
-Wall {
-  translation 3.5 0 10
-  size 2 2.4 0.1
-}
 DEF Tavolo1 Table {
-  translation 6 0 -6.5
-  name "table1"
-  size 2 0.74 1.4
-  trayAppearance VarnishedPine {
-    colorOverride 0 0 0
-    textureTransform TextureTransform {
-      scale 10 10
-    }
-  }
-  legAppearance VarnishedPine {
-    colorOverride 0.933333 0.933333 0.92549
-    textureTransform TextureTransform {
-      scale 4 5
-    }
-  }
-}
-DEF Tavolo1 Table {
-  translation 6.1 0 0.1
+  translation 4.2 0 0.2
   rotation 0 -1 0 1.5707963267948968
   name "table1(1)"
-  size 5 0.74 1.4
+  size 4.3 0.74 1.4
   trayAppearance VarnishedPine {
     colorOverride 0 0 0
     textureTransform TextureTransform {
@@ -513,7 +399,7 @@ DEF Tavolo1 Table {
   }
 }
 DEF Tavolo1 Table {
-  translation -6.5 0 2.2
+  translation -4.5 0 1
   name "table1(3)"
   size 2 0.74 1.4
   trayAppearance VarnishedPine {
@@ -530,41 +416,7 @@ DEF Tavolo1 Table {
   }
 }
 DEF Tavolo1 Table {
-  translation -6.5 0 -1.8
-  name "table1(6)"
-  size 2 0.74 1.4
-  trayAppearance VarnishedPine {
-    colorOverride 0 0 0
-    textureTransform TextureTransform {
-      scale 10 10
-    }
-  }
-  legAppearance VarnishedPine {
-    colorOverride 0.933333 0.933333 0.92549
-    textureTransform TextureTransform {
-      scale 4 5
-    }
-  }
-}
-DEF Tavolo1 Table {
-  translation 0 0 -1.8
-  name "table1(4)"
-  size 2 0.74 1.4
-  trayAppearance VarnishedPine {
-    colorOverride 0 0 0
-    textureTransform TextureTransform {
-      scale 10 10
-    }
-  }
-  legAppearance VarnishedPine {
-    colorOverride 0.933333 0.933333 0.92549
-    textureTransform TextureTransform {
-      scale 4 5
-    }
-  }
-}
-DEF Tavolo1 Table {
-  translation 0 0 2.2
+  translation 0.7 0 0.9
   name "table1(7)"
   size 2 0.74 1.4
   trayAppearance VarnishedPine {
@@ -581,7 +433,7 @@ DEF Tavolo1 Table {
   }
 }
 DEF Tavolo1 Table {
-  translation 0 0 7
+  translation 0.7 0 4.7
   name "table1(5)"
   size 2 0.74 1.4
   trayAppearance VarnishedPine {
@@ -598,7 +450,7 @@ DEF Tavolo1 Table {
   }
 }
 DEF Tavolo1 Table {
-  translation 6 0 7
+  translation 4.2 0 4.7
   name "table1(2)"
   size 2 0.74 1.4
   trayAppearance VarnishedPine {
@@ -615,101 +467,85 @@ DEF Tavolo1 Table {
   }
 }
 Window {
-  translation 0 0 10
+  translation 2 0 6.5
   size 5 2.4 0.1
   windowThickness 0.1
   bottomWallHeight 0.5
 }
 Window {
-  translation 6.5 0 10
-  name "window(1)"
-  size 4 2.4 0.1
-  windowThickness 0.1
-  bottomWallHeight 0.5
-}
-Window {
-  translation 6.5 0 -10
+  translation 3.5 0 -6.5
   name "window(3)"
   size 4 2.4 0.1
   windowThickness 0.1
   bottomWallHeight 0.5
 }
 Window {
-  translation 10 0 -4
-  rotation 0 1 0 -1.5708003061004252
+  translation -3.5 0 -6.5
   name "window(2)"
-  size 6 2.4 0.1
+  size 4 2.4 0.1
   windowThickness 0.1
   bottomWallHeight 0.5
 }
 Window {
-  translation 10 0 4
+  translation 6.5 0 1.5
   rotation 0 1 0 -1.5708003061004252
   name "window(5)"
   size 6 2.4 0.1
   windowThickness 0.1
   bottomWallHeight 0.5
 }
-Window {
-  translation -6.5 0 -10
-  name "window(4)"
-  size 4 2.4 0.1
-  windowThickness 0.1
-  bottomWallHeight 0.5
-}
 Worktop {
-  translation -9.6 0.71 -8.32944
-  rotation 1 0 0 0
-  size 0.7 0.06 1.5
+  translation -4.2 0.71 -3.2
+  rotation 0 1 0 -1.5707996938995747
+  size 0.5 0.06 1.5
 }
 Sink {
-  translation -9.56 0.79 -7.87445
+  translation -4.6 0.79 -3.3
+  rotation 0 1 0 3.141592653589793
 }
 Worktop {
-  translation -4.40298 0.71 -7.08919
-  rotation 1 0 0 0
+  translation -2.8 0.71 -2.4
   name "worktop(1)"
-  size 0.7 0.06 2.2
+  size 0.5 0.06 1.9
 }
 Worktop {
-  translation -3.1 0.8 -9.1
-  rotation 1 0 0 0
+  translation -1.7 0.8 -2.8
   name "worktop(3)"
-  size 0.4 0.06 1.7
+  size 0.4 0.06 1.3
 }
 Laptop {
-  translation -3.05 0.82 -9.15
+  translation -1.7 0.82 -2.9
   rotation 0 1 0 1.5707996938995747
 }
 Worktop {
-  translation -6.3 0.71 -6.2
+  translation -3.8 0.71 -1.6
   rotation 9.58979e-09 -1 -9.58979e-09 -1.5707953071795862
   name "worktop(2)"
-  size 0.3 0.06 4
+  size 0.3 0.06 2
 }
 Worktop {
-  translation -7.5 1 9.7
+  translation -5 1 6.25
   rotation 9.58979e-09 -1 -9.58979e-09 -1.5707953071795862
   name "worktop(4)"
-  size 0.7 0.06 5
+  size 0.5 0.06 3
 }
 UnevenTerrain {
-  translation -12.5 -2.13163e-14 1.24345e-14
-  size 5 0 30
+  translation -9 0 0
+  size 5 0 23
 }
 UnevenTerrain {
-  translation 12.4605 0 0.25184
+  translation 9 0 0
   name "uneven terrain(4)"
-  size 5 0 30
+  size 5 0 23
 }
 UnevenTerrain {
-  translation 0 0 -12.5
+  translation 0 0 -9
   rotation 0 1 0 -1.5707953071795862
   name "uneven terrain(3)"
-  size 5 0 30
+  size 5 0 23
 }
 CeilingLight {
-  translation -6 2.4 -2
+  translation -4.9 2.4 -2.4
   name "ceiling light(7)"
 }
 CeilingLight {
@@ -721,24 +557,20 @@ CeilingLight {
   name "ceiling light(12)"
 }
 CeilingLight {
-  translation 6 2.4 -2
+  translation 5 2.4 -2
   name "ceiling light(13)"
 }
 CeilingLight {
-  translation 6 2.4 2
+  translation 5 2.4 2
   name "ceiling light(15)"
 }
 CeilingLight {
-  translation 6 2.4 6
+  translation 3 2.4 5
   name "ceiling light(3)"
 }
 CeilingLight {
-  translation 2 2.4 6
+  translation -1 2.4 5
   name "ceiling light(2)"
-}
-CeilingLight {
-  translation -2 2.4 6
-  name "ceiling light(5)"
 }
 CeilingLight {
   translation 2 2.4 2
@@ -749,70 +581,71 @@ CeilingLight {
   name "ceiling light(18)"
 }
 CeilingLight {
-  translation -6 2.4 2
+  translation -5 2.4 2
   name "ceiling light(19)"
 }
 CeilingLight {
-  translation 6 2.4 -6
+  translation 5 2.4 -5
   name "ceiling light(14)"
 }
 CeilingLight {
-  translation 2 2.4 -6
+  translation 2 2.4 -5
   name "ceiling light(9)"
 }
 CeilingLight {
-  translation -2 2.4 -6
+  translation -2 2.4 -5
   name "ceiling light(8)"
 }
 CeilingLight {
-  translation -7.00927 2.4 -8.68466
+  translation -5 2.4 -5
   name "ceiling light(6)"
 }
 CeilingLight {
-  translation -8.6619 2.4 8.83307
-  name "ceiling light(4)"
-}
-CeilingLight {
-  translation -5.91884 2.4 8.91978
+  translation -5 2.4 5.5
   name "ceiling light(10)"
 }
-CeilingLight {
-  translation -0.220145 2.4 1.12027
-  name "ceiling light(1)"
-}
 UnevenTerrain {
-  translation 0 0 12.5
+  translation 0 0 9
   rotation 0 1 0 -1.5707953071795862
   name "uneven terrain(2)"
-  size 5 0 30
+  size 5 0 23
 }
 PottedTree {
-  translation -1.38224 5.06262e-14 -10.718
+  translation -1.2 5.06262e-14 -6.8
 }
 PottedTree {
-  translation 1.3976 5.32907e-14 -10.7025
+  translation 1.2 0 -6.9
   name "potted tree(1)"
 }
 PalmTree {
-  translation -4.25407 -2.02504e-13 13.4009
+  translation -3 0 9.5
 }
 PalmTree {
-  translation -12.6297 -2.30926e-13 12.1644
+  translation -9.5 0 9.5
   name "palm tree(5)"
 }
 PalmTree {
-  translation 5.10577 -4.15667e-13 12.6295
+  translation 4 0 9.5
   name "palm tree(3)"
 }
 PalmTree {
-  translation 12.8887 3.55271e-15 0.988341
+  translation 9.5 0 0
   name "palm tree(1)"
 }
 PalmTree {
-  translation 12.6406 -1.52767e-13 -8.93072
+  translation 9.5 0 -9.5
   name "palm tree(2)"
 }
 LandscapePainting {
-  translation -9.9 1.1 -0.3
+  translation -6.4 1.1 1
   rotation 0 1 0 1.5708
+}
+Armchair {
+  translation -5.5 0 -4.3
+  rotation 0 1 0 0.5235996938995747
+}
+Armchair {
+  translation -3.1 0 -4.4
+  rotation 0 1 0 2.3561996938995744
+  name "armchair(1)"
 }
