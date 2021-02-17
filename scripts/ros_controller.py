@@ -55,6 +55,7 @@ class TiagoController:
         self.scan_publisher = None
         self.front_distance = None
         self.isFree = True
+        self.last_command = None
 
         self.velocity_publisher = rospy.Publisher(self.name + '/cmd_vel', Twist, queue_size=10)
         self.bumper_subscriber = rospy.Subscriber(self.name + "/base_cover_link/value", BoolStamped, self.bumper_callback)
@@ -100,8 +101,8 @@ class TiagoController:
         rospy.sleep(1)
 
     def keyboard_callback(self, res):
-        key=res.data
-        if (key == 65):
+        key = res.data
+        if (key == 65 and key is not self.last_command):
             self.go_to_kitchen()
             self.move(19, 0)
             rospy.sleep(1)
@@ -115,6 +116,8 @@ class TiagoController:
             rospy.sleep(1)
         elif (key == 90):
             self.move_to_entrance_from_a()
+        
+        self.last_command = res.data
 
     def move_to_a(self):
         self.move(110, 0)
