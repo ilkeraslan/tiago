@@ -69,47 +69,175 @@ class TiagoController:
         rospy.logerr(f'Right post: {self.right_position}')
         
         self.go_to_kitchen()
-        self.kitchen_to_C()
-        self.C_to_K()
-        # self.rotate(180, False)
-        # rospy.sleep(1)
-        # self.move(10, 0)
-        # rospy.sleep(1)
-        # self.rotate(90, True)
-        # self.move(10, 90)
-        # rospy.sleep(1)
-        # self.rotate(90, False)
-        # rospy.sleep(1)
-        # self.move(10, 90)
-        # rospy.sleep(1)
-        # self.rotate(90, True)
-        # rospy.sleep(1)
-        # self.move(10, 90)
-        # rospy.sleep(1)
+        rospy.sleep(1)
+        self.kitchen_to_A()
+        self.A_to_kitchen()
+        self.kitchen_to_bathroom()
 
         rospy.spin()
 
     def go_to_kitchen(self):
         self.rotate(180, False)
         rospy.sleep(1)
+        self.move(9, 0)
+        rospy.sleep(1)
+        self.rotate(90, True)
+        self.move(37, 90)
+        rospy.sleep(1)
+        self.rotate(90, False)
+        rospy.sleep(1)
+
+    def kitchen_to_bathroom(self):
+        self.rotate(90, False)
+        rospy.sleep(1)
         self.move(10, 0)
         rospy.sleep(1)
         self.rotate(90, True)
-        self.move(65, 90)
+        self.rotate(1, False)
+        self.move(60, 90)
         rospy.sleep(1)
-        self.rotate(90, False)
+        self.rotate(180, False)
         rospy.sleep(1)
     
     def kitchen_to_A(self):
-        self.move(10, 0)
-        rospy.sleep(1)
         self.rotate(90, False)
         rospy.sleep(1)
-        self.move(15, 270)
+        self.move(7, 270)
         rospy.sleep(1)
         self.rotate(90, True)
         rospy.sleep(1)
-        self.move(25, 0)
+        self.move(15, 0)
+        rospy.sleep(1)
+        self.rotate(90, False)
+        self.rotate(1, False)
+        rospy.sleep(1)
+
+    def A_to_kitchen(self):
+        self.rotate(90, False)
+        rospy.sleep(1)
+        self.move(15, 0)
+        rospy.sleep(1)
+        self.rotate(90, False)
+        rospy.sleep(1)
+        self.move(7, 270)
+        rospy.sleep(1)
+        self.rotate(90, False)
+        rospy.sleep(1)
+
+    def kitchen_to_B(self):
+        self.rotate(90, False)
+        rospy.sleep(1)
+        self.move(29, 270)
+        rospy.sleep(1)
+        self.rotate(90, True)
+        rospy.sleep(1)
+        self.move(13, 0)
+        rospy.sleep(1)
+        self.rotate(90, True)
+        self.rotate(1, True)
+        rospy.sleep(1)
+
+    def B_to_kitchen(self):
+        self.rotate(90, True)
+        rospy.sleep(1)
+        self.move(13, 0)
+        rospy.sleep(1)
+        self.rotate(90, False)
+        self.rotate(1, True)
+        rospy.sleep(1)
+        self.move(29, 270)
+        rospy.sleep(1)
+        self.rotate(90, False)
+        rospy.sleep(1)
+
+    def kitchen_to_C(self):
+        self.rotate(90, False)
+        rospy.sleep(1)
+        self.move(28, 0)
+        rospy.sleep(1)
+        self.rotate(90, True)
+        rospy.sleep(1)
+        self.move(52, 0)
+        rospy.sleep(1)
+        self.rotate(90, True)
+        rospy.sleep(1)
+
+    def C_to_kitchen(self):
+        self.rotate(90, True)
+        self.rotate(1, True)
+        rospy.sleep(1)
+        self.move(54, 0)
+        rospy.sleep(1)
+        self.rotate(90, False)
+        self.rotate(1, True)
+        rospy.sleep(1)
+        self.move(28, 0)
+        rospy.sleep(1)
+        self.rotate(90, False)
+        rospy.sleep(1)
+
+    def kitchen_to_E(self):
+        self.rotate(90, False)
+        rospy.sleep(1)
+        self.move(63, 0)
+        rospy.sleep(1)
+        self.rotate(90, True)
+        self.rotate(1, False)
+        rospy.sleep(1)
+        self.move(54, 0)
+        rospy.sleep(1)
+        self.rotate(90, True)
+        self.rotate(1, True)
+        rospy.sleep(1)
+
+    def E_to_kitchen(self):
+        self.rotate(90, True)
+        self.rotate(1, True)
+        rospy.sleep(1)
+        self.move(54, 0)
+        rospy.sleep(1)
+        self.rotate(90, False)
+        self.rotate(1, True)
+        rospy.sleep(1)
+        self.move(63, 0)
+        rospy.sleep(1)
+        self.rotate(90, False)
+        rospy.sleep(1)
+
+    def kitchen_to_F(self):
+        self.rotate(90, False)
+        rospy.sleep(1)
+        self.move(63, 0)
+        rospy.sleep(1)
+        self.rotate(90, False)
+        rospy.sleep(1)
+        self.move(19, 0)
+        rospy.sleep(1)
+        self.rotate(90, True)
+        self.rotate(1, False)
+        rospy.sleep(1)
+        self.move(17, 0)
+        rospy.sleep(1)
+        self.rotate(90, False)
+        rospy.sleep(1)
+
+    def F_to_kitchen(self):
+        self.rotate(90, False)
+        rospy.sleep(1)
+        self.move(17, 0)
+        rospy.sleep(1)
+        self.rotate(90, False)
+        self.rotate(1, False)
+        rospy.sleep(1)
+        self.move(19, 0)
+        rospy.sleep(1)
+        self.rotate(90, True)
+        self.rotate(1, False)
+        self.rotate(1, False)
+        rospy.sleep(1)
+        self.move(63, 0)
+        rospy.sleep(1)
+        self.rotate(90, False)
         rospy.sleep(1)
 
     def keyboard_callback(self, res):
@@ -121,75 +249,6 @@ class TiagoController:
             self.move_to_entrance_from_a()
         
         self.last_command = res.data
-
-    def move_to_a(self):
-        self.move(110, 0)
-        rospy.sleep(1)
-        self.rotate(90)
-        rospy.sleep(1)
-        self.move(19, 90)
-        rospy.sleep(1)
-        self.rotate(270)
-        rospy.sleep(1)
-        self.move(20, 0)
-        rospy.sleep(1)
-
-    def move_to_entrance_from_a(self):
-        self.rotate(90, False)
-        rospy.sleep(1)
-        self.move(20, 180)
-        rospy.sleep(1)
-        self.rotate(90, True)
-        rospy.sleep(1)
-        self.move(40, 270)
-        rospy.sleep(1)
-        self.rotate(90, False)
-        rospy.sleep(1)
-        self.move(25, 180)
-        rospy.sleep(1)
-
-    def kitchen_to_B(self):
-        self.kitchen_to_A()
-        self.move(40,0)
-        rospy.sleep(1)
-
-    def kitchen_to_G(self):
-        self.move(10, 0)
-        rospy.sleep(1)
-        self.rotate(90, False)
-        rospy.sleep(1)
-        self.move(50, 270)
-        rospy.sleep(1)
-        self.rotate(90, True)
-        rospy.sleep(1)
-        self.move(15, 0)
-        rospy.sleep(1)
-
-    def kitchen_to_H(self):
-        self.kitchen_to_G()
-        self.move(40,0)
-        rospy.sleep(1)
-
-    def kitchen_to_C(self):
-        self.kitchen_to_H()
-        self.move(45,0)
-        rospy.sleep(1)
-           
-    def C_to_K(self):
-        self.move(45,180)
-        rospy.sleep(1)
-        self.move(40,180)
-        rospy.sleep(1)
-        self.move(15, 180)
-        rospy.sleep(1)
-        self.rotate(90, False)
-        rospy.sleep(1)
-        self.move(25, 90)
-        rospy.sleep(1)
-        self.rotate(90, True)
-        rospy.sleep(1)
-        self.move(10, 180)
-        rospy.sleep(1)
 
     def move(self, distance, orientation):
         global x,y,yaw, isFree, isBumped, RobotPose
@@ -325,8 +384,8 @@ class TiagoController:
             distance_clockwise = distance_clockwise_90/2
 
         elif angle == 90:
-            distance_not_clockwise = distance_not_clockwise_90 -0.115
-            distance_clockwise = distance_clockwise_90-0.003
+            distance_not_clockwise = distance_not_clockwise_90 -0.118
+            distance_clockwise = distance_clockwise_90-0.08
 
         elif angle == 135:
             distance_not_clockwise = distance_not_clockwise_90 + distance_not_clockwise_90/2
@@ -352,6 +411,10 @@ class TiagoController:
             distance_not_clockwise = (distance_not_clockwise_90 + 0.04)*4
             distance_clockwise = (distance_clockwise_90 + 0.04)*4
 
+        elif angle == 1:
+            distance_not_clockwise = 0.05
+            distance_clockwise = 0.05
+
         else: 
             rospy.logerr(f'angolo non accettato: {angle}' )
 
@@ -365,7 +428,7 @@ class TiagoController:
             left_condition = left + distance_clockwise
             right_condition = right - distance_clockwise
 
-            while (left_dist < left_condition and right_dist > right_condition):
+            while (left_dist <= left_condition and right_dist >= right_condition):
 
                     self.service_set_motor_velocity_left.call(0.8)
                     self.service_set_motor_velocity_right.call(0.8)
@@ -387,7 +450,7 @@ class TiagoController:
             left_condition = left - distance_not_clockwise
             right_condition = distance_not_clockwise + right
 
-            while (left_dist > left_condition and right_dist < right_condition):
+            while (left_dist >= left_condition and right_dist <= right_condition):
 
                     self.service_set_motor_velocity_left.call(1)
                     self.service_set_motor_velocity_right.call(1)
