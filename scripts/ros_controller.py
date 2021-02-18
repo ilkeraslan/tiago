@@ -72,7 +72,9 @@ class TiagoController:
         rospy.sleep(1)
         self.kitchen_to_A()
         self.A_to_kitchen()
-        self.kitchen_to_bathroom()
+        self.rotate(90, False)
+        rospy.sleep(1)
+        self.move(20,0)
 
         rospy.spin()
 
@@ -122,6 +124,8 @@ class TiagoController:
         self.move(7, 270)
         rospy.sleep(1)
         self.rotate(90, False)
+        self.rotate(1,False)
+        self.rotate(1,False)
         rospy.sleep(1)
 
     def kitchen_to_B(self):
