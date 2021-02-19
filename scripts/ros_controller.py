@@ -15,6 +15,7 @@ To calculate the odometry, the classical coordinate system is used.
 import rospy
 import math
 import numpy as np
+from commands import Commands
 from std_msgs.msg import Float64
 from webots_ros.srv import set_float, get_float, set_int, get_int
 from webots_ros.msg import Float64Stamped, BoolStamped, Int32Stamped
@@ -75,14 +76,6 @@ class TiagoController:
         rospy.logerr(f'Left post: {self.left_position}')
         rospy.logerr(f'Right post: {self.right_position}')
         
-        self.go_to_kitchen()
-        rospy.sleep(1)
-        self.kitchen_to_A()
-        self.A_to_kitchen()
-        self.rotate(90, False)
-        rospy.sleep(1)
-        self.move(20,0)
-
         rospy.spin()
 
     def go_to_kitchen(self):
@@ -253,7 +246,7 @@ class TiagoController:
 
     def keyboard_callback(self, res):
         key = res.data
-        if (key == 65 and key is not self.last_command):
+        if (key == Commands.go_to_kitchen.value and key is not self.last_command):
             self.go_to_kitchen()
             
         elif (key == 90):
