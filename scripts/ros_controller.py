@@ -247,11 +247,33 @@ class TiagoController:
     def keyboard_callback(self, res):
         key = res.data
         if (key == Commands.go_to_kitchen.value and key is not self.last_command):
-            self.go_to_kitchen()
-            
-        elif (key == 90):
-            self.move_to_entrance_from_a()
-        
+            self.go_to_kitchen()   
+        elif (key == Commands.go_to_A.value and key is not self.last_command):
+            self.kitchen_to_A()
+        elif (key == Commands.go_to_B.value and key is not self.last_command):
+            self.kitchen_to_B()
+        elif (key == Commands.go_to_C.value and key is not self.last_command):
+            self.kitchen_to_C()
+        elif (key == Commands.go_to_D.value and key is not self.last_command):
+            self.kitchen_to_D()
+        elif (key == Commands.go_to_E.value and key is not self.last_command):
+            self.kitchen_to_E()
+        elif (key == Commands.go_to_F.value and key is not self.last_command):
+            self.kitchen_to_F()  
+        elif (key == Commands.go_to_toilet.value and key is not self.last_command):
+            self.kitchen_to_bathroom()  
+        elif (key == Commands.go_to_kitchen_from_A.value and key is not self.last_command):
+            self.A_to_kitchen()
+        elif (key == Commands.go_to_kitchen_from_B.value and key is not self.last_command):
+            self.B_to_kitchen()  
+        elif (key == Commands.go_to_kitchen_from_C.value and key is not self.last_command):
+            self.C_to_kitchen() 
+        elif (key == Commands.go_to_kitchen_from_D.value and key is not self.last_command):
+            self.D_to_kitchen() 
+        elif (key == Commands.go_to_kitchen_from_E.value and key is not self.last_command):
+            self.E_to_kitchen() 
+        elif (key == Commands.go_to_kitchen_from_F.value and key is not self.last_command):
+            self.F_to_kitchen()                
         self.last_command = res.data
 
     def move(self, distance, orientation):
