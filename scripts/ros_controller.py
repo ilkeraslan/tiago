@@ -3,6 +3,13 @@
 """
 This is controller node receiving sensor values and publishing motor commands (velocity)
 to drive Tiago and stop it before colliding with an obstacle.
+
+To calculate the odometry, the classical coordinate system is used.
+     +y
+      ↑
+ -x ← o → +x
+      ↓
+     -y
 """
 
 import rospy
@@ -81,10 +88,10 @@ class TiagoController:
     def go_to_kitchen(self):
         self.rotate(180, False)
         rospy.sleep(1)
-        self.move(9, 0)
+        self.move(9, 90)
         rospy.sleep(1)
         self.rotate(90, True)
-        self.move(37, 90)
+        self.move(37, 0)
         rospy.sleep(1)
         self.rotate(90, False)
         rospy.sleep(1)
@@ -92,7 +99,7 @@ class TiagoController:
     def kitchen_to_bathroom(self):
         self.rotate(90, False)
         rospy.sleep(1)
-        self.move(10, 0)
+        self.move(10, 180)
         rospy.sleep(1)
         self.rotate(90, True)
         self.rotate(1, False)
@@ -104,11 +111,11 @@ class TiagoController:
     def kitchen_to_A(self):
         self.rotate(90, False)
         rospy.sleep(1)
-        self.move(7, 270)
+        self.move(7, 180)
         rospy.sleep(1)
         self.rotate(90, True)
         rospy.sleep(1)
-        self.move(15, 0)
+        self.move(15, 90)
         rospy.sleep(1)
         self.rotate(90, False)
         self.rotate(1, False)
@@ -117,11 +124,11 @@ class TiagoController:
     def A_to_kitchen(self):
         self.rotate(90, False)
         rospy.sleep(1)
-        self.move(15, 0)
+        self.move(15, 270)
         rospy.sleep(1)
         self.rotate(90, False)
         rospy.sleep(1)
-        self.move(7, 270)
+        self.move(7, 0)
         rospy.sleep(1)
         self.rotate(90, False)
         self.rotate(1,False)
@@ -131,11 +138,11 @@ class TiagoController:
     def kitchen_to_B(self):
         self.rotate(90, False)
         rospy.sleep(1)
-        self.move(29, 270)
+        self.move(29, 180)
         rospy.sleep(1)
         self.rotate(90, True)
         rospy.sleep(1)
-        self.move(13, 0)
+        self.move(13, 90)
         rospy.sleep(1)
         self.rotate(90, True)
         self.rotate(1, True)
@@ -144,12 +151,12 @@ class TiagoController:
     def B_to_kitchen(self):
         self.rotate(90, True)
         rospy.sleep(1)
-        self.move(13, 0)
+        self.move(13, 270)
         rospy.sleep(1)
         self.rotate(90, False)
         self.rotate(1, True)
         rospy.sleep(1)
-        self.move(29, 270)
+        self.move(29, 0)
         rospy.sleep(1)
         self.rotate(90, False)
         rospy.sleep(1)
@@ -157,11 +164,11 @@ class TiagoController:
     def kitchen_to_C(self):
         self.rotate(90, False)
         rospy.sleep(1)
-        self.move(28, 0)
+        self.move(28, 180)
         rospy.sleep(1)
         self.rotate(90, True)
         rospy.sleep(1)
-        self.move(52, 0)
+        self.move(52, 90)
         rospy.sleep(1)
         self.rotate(90, True)
         rospy.sleep(1)
@@ -170,7 +177,7 @@ class TiagoController:
         self.rotate(90, True)
         self.rotate(1, True)
         rospy.sleep(1)
-        self.move(54, 0)
+        self.move(54, 270)
         rospy.sleep(1)
         self.rotate(90, False)
         self.rotate(1, True)
@@ -183,12 +190,12 @@ class TiagoController:
     def kitchen_to_E(self):
         self.rotate(90, False)
         rospy.sleep(1)
-        self.move(63, 0)
+        self.move(63, 180)
         rospy.sleep(1)
         self.rotate(90, True)
         self.rotate(1, False)
         rospy.sleep(1)
-        self.move(54, 0)
+        self.move(54, 90)
         rospy.sleep(1)
         self.rotate(90, True)
         self.rotate(1, True)
@@ -198,7 +205,7 @@ class TiagoController:
         self.rotate(90, True)
         self.rotate(1, True)
         rospy.sleep(1)
-        self.move(54, 0)
+        self.move(54, 270)
         rospy.sleep(1)
         self.rotate(90, False)
         self.rotate(1, True)
@@ -211,16 +218,16 @@ class TiagoController:
     def kitchen_to_F(self):
         self.rotate(90, False)
         rospy.sleep(1)
-        self.move(63, 0)
+        self.move(63, 180)
         rospy.sleep(1)
         self.rotate(90, False)
         rospy.sleep(1)
-        self.move(19, 0)
+        self.move(19, 270)
         rospy.sleep(1)
         self.rotate(90, True)
         self.rotate(1, False)
         rospy.sleep(1)
-        self.move(17, 0)
+        self.move(17, 180)
         rospy.sleep(1)
         self.rotate(90, False)
         rospy.sleep(1)
@@ -233,7 +240,7 @@ class TiagoController:
         self.rotate(90, False)
         self.rotate(1, False)
         rospy.sleep(1)
-        self.move(19, 0)
+        self.move(19, 90)
         rospy.sleep(1)
         self.rotate(90, True)
         self.rotate(1, False)
