@@ -89,6 +89,7 @@ class TiagoController:
         self.move(37, 0)
         rospy.sleep(1)
         self.rotate(90, False)
+        self.rotate(0.5, True)
         rospy.sleep(1)
 
     def kitchen_to_bathroom(self):
@@ -97,10 +98,25 @@ class TiagoController:
         self.move(10, 180)
         rospy.sleep(1)
         self.rotate(90, True)
-        self.rotate(1, False)
+        self.rotate(0.5, False)
         self.move(60, 90)
         rospy.sleep(1)
         self.rotate(180, False)
+        self.rotate(1, True)
+        self.rotate(1, True)
+        self.rotate(1, True)
+        rospy.sleep(1)
+
+    def bathroom_to_kitchen(self):
+        self.move(60, 270)
+        rospy.sleep(1)
+        self.rotate(90, False)
+        self.move(10, 180)
+        rospy.sleep(1)
+        self.rotate(90, False)
+        self.rotate(1, False)
+        self.rotate(1, False)
+        self.rotate(0.5, False)
         rospy.sleep(1)
     
     def kitchen_to_A(self):
@@ -138,6 +154,7 @@ class TiagoController:
         self.move(29, 180)
         rospy.sleep(1)
         self.rotate(90, True)
+        self.rotate(1, True)
         rospy.sleep(1)
         self.move(13, 90)
         rospy.sleep(1)
@@ -244,7 +261,6 @@ class TiagoController:
         self.rotate(90, True)
         self.rotate(1, False)
         self.rotate(1, False)
-        self.rotate(0.5, False)
         rospy.sleep(1)
         self.move(63, 0)
         rospy.sleep(1)
@@ -280,7 +296,9 @@ class TiagoController:
         elif (key == Commands.go_to_kitchen_from_E.value and key is not self.last_command):
             self.E_to_kitchen() 
         elif (key == Commands.go_to_kitchen_from_F.value and key is not self.last_command):
-            self.F_to_kitchen()                
+            self.F_to_kitchen()     
+        elif (key == Commands.go_to_kitchen_from_toilet.value and key is not self.last_command):
+            self.bathroom_to_kitchen()             
         self.last_command = res.data
 
     def move(self, distance, orientation):

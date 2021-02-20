@@ -24,9 +24,6 @@ DirectionalLight {
 }
 RectangleArena {
   floorSize 13 13
-  floorAppearance Parquetry {
-    type "dark strip"
-  }
   wallHeight 0.5
   wallAppearance BrushedAluminium {
     colorOverride 0.933333 0.933333 0.92549
