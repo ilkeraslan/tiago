@@ -150,11 +150,11 @@ class TiagoController:
 
     def kitchen_to_B(self):
         self.rotate(90, False)
+        self.rotate(1,False)
         rospy.sleep(1)
         self.move(29, 180)
         rospy.sleep(1)
         self.rotate(90, True)
-        self.rotate(1, True)
         rospy.sleep(1)
         self.move(13, 90)
         rospy.sleep(1)
@@ -168,19 +168,52 @@ class TiagoController:
         self.move(13, 270)
         rospy.sleep(1)
         self.rotate(90, False)
-        self.rotate(1, True)
+        self.rotate(0.5, True)
         rospy.sleep(1)
         self.move(29, 0)
         rospy.sleep(1)
         self.rotate(90, False)
+        self.rotate(1,False)
+        self.rotate(1,False)
         rospy.sleep(1)
 
+    def kitchen_to_payment(self):
+        self.rotate(90, False)
+        self.rotate(1, False)
+        rospy.sleep(1)
+        self.move(27,180)
+        rospy.sleep(1)
+        self.rotate(90, False)
+        self.rotate(1,False)
+        rospy.sleep(1)
+        self.move(16,270)
+        rospy.sleep(1)
+        self.rotate(90,True)
+        self.rotate(1,True)
+        rospy.sleep(1)
+    
+    def payment_to_kitchen(self):
+        self.rotate(90, True)
+        rospy.sleep(1)
+        self.move(16,90)
+        rospy.sleep(1)
+        self.rotate(90, True)
+        rospy.sleep(1)
+        self.move(27,0)
+        rospy.sleep(1)
+        self.rotate(90,False)
+        self.rotate(1,False)
+        self.rotate(0.5,False)
+        rospy.sleep(1)
+    
     def kitchen_to_C(self):
         self.rotate(90, False)
+        self.rotate(1, False)
         rospy.sleep(1)
         self.move(28, 180)
         rospy.sleep(1)
         self.rotate(90, True)
+        self.rotate(0.5, False)
         rospy.sleep(1)
         self.move(52, 90)
         rospy.sleep(1)
@@ -199,10 +232,14 @@ class TiagoController:
         self.move(28, 0)
         rospy.sleep(1)
         self.rotate(90, False)
+        self.rotate(1,False)
+        self.rotate(1, False)
+        self.rotate(0.5, False)
         rospy.sleep(1)
 
     def kitchen_to_E(self):
         self.rotate(90, False)
+        self.rotate(1, False)
         rospy.sleep(1)
         self.move(63, 180)
         rospy.sleep(1)
@@ -232,6 +269,7 @@ class TiagoController:
 
     def kitchen_to_F(self):
         self.rotate(90, False)
+        self.rotate(1,False)
         rospy.sleep(1)
         self.move(63, 180)
         rospy.sleep(1)
@@ -260,7 +298,7 @@ class TiagoController:
         rospy.sleep(1)
         self.rotate(90, True)
         self.rotate(1, False)
-        self.rotate(1, False)
+        self.rotate(0.5,False)
         rospy.sleep(1)
         self.move(63, 0)
         rospy.sleep(1)
@@ -278,7 +316,7 @@ class TiagoController:
         elif (key == Commands.go_to_C.value and key is not self.last_command):
             self.kitchen_to_C()
         elif (key == Commands.go_to_D.value and key is not self.last_command):
-            self.kitchen_to_D()
+            self.kitchen_to_payment()
         elif (key == Commands.go_to_E.value and key is not self.last_command):
             self.kitchen_to_E()
         elif (key == Commands.go_to_F.value and key is not self.last_command):
@@ -292,7 +330,7 @@ class TiagoController:
         elif (key == Commands.go_to_kitchen_from_C.value and key is not self.last_command):
             self.C_to_kitchen() 
         elif (key == Commands.go_to_kitchen_from_D.value and key is not self.last_command):
-            self.D_to_kitchen() 
+            self.payment_to_kitchen()
         elif (key == Commands.go_to_kitchen_from_E.value and key is not self.last_command):
             self.E_to_kitchen() 
         elif (key == Commands.go_to_kitchen_from_F.value and key is not self.last_command):
