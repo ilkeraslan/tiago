@@ -81,9 +81,11 @@ class TiagoController:
     def go_to_kitchen(self):
         self.rotate(180, False)
         rospy.sleep(1)
-        self.move(9, 90)
+        self.move(8, 90)
         rospy.sleep(1)
         self.rotate(90, True)
+        self.rotate(1, True)
+        self.rotate(0.5, True)
         self.move(37, 0)
         rospy.sleep(1)
         self.rotate(90, False)
@@ -103,6 +105,7 @@ class TiagoController:
     
     def kitchen_to_A(self):
         self.rotate(90, False)
+        self.rotate(1, False)
         rospy.sleep(1)
         self.move(7, 180)
         rospy.sleep(1)
@@ -116,6 +119,7 @@ class TiagoController:
 
     def A_to_kitchen(self):
         self.rotate(90, False)
+        self.rotate(1,False)
         rospy.sleep(1)
         self.move(15, 270)
         rospy.sleep(1)
@@ -201,11 +205,12 @@ class TiagoController:
         self.move(54, 270)
         rospy.sleep(1)
         self.rotate(90, False)
-        self.rotate(1, True)
         rospy.sleep(1)
         self.move(63, 0)
         rospy.sleep(1)
         self.rotate(90, False)
+        self.rotate(1, False)
+        self.rotate(1, False)
         rospy.sleep(1)
 
     def kitchen_to_F(self):
@@ -227,6 +232,7 @@ class TiagoController:
 
     def F_to_kitchen(self):
         self.rotate(90, False)
+        self.rotate(0.5, False)
         rospy.sleep(1)
         self.move(17, 0)
         rospy.sleep(1)
@@ -238,6 +244,7 @@ class TiagoController:
         self.rotate(90, True)
         self.rotate(1, False)
         self.rotate(1, False)
+        self.rotate(0.5, False)
         rospy.sleep(1)
         self.move(63, 0)
         rospy.sleep(1)
@@ -296,7 +303,7 @@ class TiagoController:
             delta_distance_y = 0
             
         elif (orientation == 90):
-            vel_msg.linear.y = abs((self.left_velocity + self.right_velocity) / 2)
+            vel_msg.linear.y = ((self.left_velocity + self.right_velocity) / 2)
             delta_distance_x = 0
             delta_distance_y = distance
 
@@ -440,6 +447,10 @@ class TiagoController:
         elif angle == 1:
             distance_not_clockwise = 0.05
             distance_clockwise = 0.05
+        
+        elif angle == 0.5:
+            distance_not_clockwise = 0.03
+            distance_clockwise = 0.03
 
         else: 
             rospy.logerr(f'angolo non accettato: {angle}' )

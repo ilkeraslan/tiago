@@ -1,10 +1,10 @@
-#VRML_SIM R2021a utf8
+#VRML_SIM R2020b utf8
 WorldInfo {
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation 0.014812467430212537 0.9553637696703074 0.2950604317931647 3.2168093558392212
-  position -2.5951851905096666 18.24731640202702 -23.668272239204313
+  orientation -0.2538351737687934 0.8323936359726015 0.49263428560147804 2.3188587565462013
+  position 5.471033416447472 14.149949427293958 -5.2902303422941
 }
 Background {
 }
@@ -24,6 +24,9 @@ DirectionalLight {
 }
 RectangleArena {
   floorSize 13 13
+  floorAppearance Parquetry {
+    type "dark strip"
+  }
   wallHeight 0.5
   wallAppearance BrushedAluminium {
     colorOverride 0.933333 0.933333 0.92549
