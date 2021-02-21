@@ -17,7 +17,7 @@ import math
 import numpy as np
 from commands import Commands
 from std_msgs.msg import Float64
-from webots_ros.srv import set_float, get_float, set_int, get_int
+from webots_ros.srv import set_float, get_float, set_int, get_int, set_bool
 from webots_ros.msg import Float64Stamped, BoolStamped, Int32Stamped
 from geometry_msgs.msg import Point, Twist, Vector3
 from turtlesim.msg import Pose
@@ -581,6 +581,8 @@ class TiagoController:
         rospy.wait_for_service(self.name + "/gyro/enable")
         rospy.wait_for_service(self.name + "/inertial_unit/enable")
         rospy.wait_for_service(self.name + "/Hokuyo_URG_04LX_UG01/enable")
+        rospy.wait_for_service(self.name + "/Hokuyo_URG_04LX_UG01/enable_point_cloud")
+        
         rospy.wait_for_service(self.name + "/base_cover_link/enable")
 
         rospy.wait_for_service(self.name + "/wheel_left_joint/set_velocity")
@@ -613,6 +615,7 @@ class TiagoController:
         self.service_gyro = rospy.ServiceProxy(self.name + "/gyro/enable", set_int)
         self.service_inertial = rospy.ServiceProxy(self.name + "/inertial_unit/enable", set_int)
         self.service_lidar = rospy.ServiceProxy(self.name + "/Hokuyo_URG_04LX_UG01/enable", set_int)
+        self.service_lidar_point_cloud = rospy.ServiceProxy(self.name + "/Hokuyo_URG_04LX_UG01/enable_point_cloud", set_bool)
         self.service_touch_sensor = rospy.ServiceProxy(self.name + "/base_cover_link/enable", set_int)
         self.torso_lift_joint_sensor = rospy.ServiceProxy(self.name + "/torso_lift_joint_sensor/enable", set_int)
         self.service_set_torso_position = rospy.ServiceProxy(self.name + "/torso_lift_joint/set_position", set_float)
@@ -623,13 +626,13 @@ class TiagoController:
         self.service_gyro.call(10)
         self.service_inertial.call(10)
         self.service_lidar.call(10)
+        self.service_lidar_point_cloud.call(True)
         self.service_touch_sensor.call(10)
         self.torso_lift_joint_sensor.call(10)
         self.keyboard.call(10)
         self.service_enable_motor_position_left.call(10)
         self.service_enable_motor_position_right.call(10)
         
-
 
 if __name__ == '__main__':
     x = 0 
