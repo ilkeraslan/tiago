@@ -17,7 +17,7 @@
   
   <node name="ros_controller" pkg="tiago" type="ros_controller.py" required="$(arg auto_close)"/>
   <node name="odom" pkg="tiago" type="odometry.py" output="screen"/>
-  <!-- <node type="rviz" name="rviz" pkg="rviz" args="-d $(find tiago)/rviz/turtle_rviz.rviz" /> -->
+  <node type="rviz" name="rviz" pkg="rviz" args="-d $(find tiago)/rviz/tiago_rviz.rviz" />
   <!-- <node name="scanners" pkg="tiago" type="scanners.py" output="screen"/> -->
 
   <!-- Axes -->
