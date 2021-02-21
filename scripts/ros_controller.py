@@ -312,16 +312,22 @@ class TiagoController:
             self.go_to_kitchen()   
         elif (key == Commands.go_to_A.value and key is not self.last_command):
             self.kitchen_to_A()
+            self.serve_dx()
         elif (key == Commands.go_to_B.value and key is not self.last_command):
             self.kitchen_to_B()
+            self.serve_dx()
         elif (key == Commands.go_to_C.value and key is not self.last_command):
             self.kitchen_to_C()
+            self.serve_dx()
         elif (key == Commands.go_to_D.value and key is not self.last_command):
             self.kitchen_to_payment()
+            self.serve_dx()
         elif (key == Commands.go_to_E.value and key is not self.last_command):
             self.kitchen_to_E()
+            self.serve_dx()
         elif (key == Commands.go_to_F.value and key is not self.last_command):
-            self.kitchen_to_F()  
+            self.kitchen_to_F()
+            self.serve_dx()  
         elif (key == Commands.go_to_toilet.value and key is not self.last_command):
             self.kitchen_to_bathroom()  
         elif (key == Commands.go_to_kitchen_from_A.value and key is not self.last_command):
@@ -437,8 +443,6 @@ class TiagoController:
         
 
     def serve_dx(self):
-        self.rotate(90,False)
-        rospy.sleep(1)
         self.service_set_torso_position(0.2)
         rospy.sleep(5)
         self.service_set_torso_position(0)
