@@ -2,6 +2,8 @@ from enum import Enum
 
 class Commands(Enum):
     go_to_kitchen = 75 # K
+    go_to_entrance_from_kitchen = 76 # L
+
     go_to_A = 65 # A
     go_to_kitchen_from_A = 81 # Q
     go_to_B = 66 # B
@@ -16,3 +18,10 @@ class Commands(Enum):
     go_to_kitchen_from_F = 82 # R
     go_to_toilet = 84 # T
     go_to_kitchen_from_toilet = 89 # Y
+
+    go_up = 315 # Up
+    turn_left = 316 # Left
+    turn_right = 314 # Right
+    go_down = 317 # Down
+
+    stop = 32 # Space

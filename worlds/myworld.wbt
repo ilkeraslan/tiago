@@ -3,8 +3,8 @@ WorldInfo {
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation -0.2538351737687934 0.8323936359726015 0.49263428560147804 2.3188587565462013
-  position 5.471033416447472 14.149949427293958 -5.2902303422941
+  orientation -0.1865404455606017 0.8530817254302971 0.4872927579052652 2.4977700611120692
+  position 9.684282287595844 20.819194836453466 -10.683773886906922
 }
 Background {
 }
@@ -24,6 +24,9 @@ DirectionalLight {
 }
 RectangleArena {
   floorSize 13 13
+  floorAppearance Parquetry {
+    type "dark strip"
+  }
   wallHeight 0.5
   wallAppearance BrushedAluminium {
     colorOverride 0.933333 0.933333 0.92549

@@ -72,9 +72,6 @@ class TiagoController:
         self.keyboard_subscriber = rospy.Subscriber(self.name + "/keyboard/key", Int32Stamped, self.keyboard_callback)
         self.scan_publisher_0 = rospy.Publisher(self.name + '/lidar_scan', LaserScan, queue_size=10)
         self.lidar_sub = rospy.Subscriber(self.name + '/Hokuyo_URG_04LX_UG01/laser_scan/layer0', LaserScan, self.callback)
-
-        rospy.logerr(f'Left post: {self.left_position}')
-        rospy.logerr(f'Right post: {self.right_position}')
         
         rospy.spin()
 
@@ -92,6 +89,18 @@ class TiagoController:
         self.rotate(0.5, True)
         rospy.sleep(1)
 
+    def go_to_entrance(self):
+        self.rotate(90, False)
+        self.rotate(1, False)
+        self.rotate(0.5, False) 
+        rospy.sleep(1)
+        self.move(37, 180)
+        rospy.sleep(1)
+        self.rotate(90, False)
+        rospy.sleep(1)
+        self.move(8, 270)
+        rospy.sleep(1)
+
     def kitchen_to_bathroom(self):
         self.rotate(90, False)
         rospy.sleep(1)
@@ -99,7 +108,7 @@ class TiagoController:
         rospy.sleep(1)
         self.rotate(90, True)
         self.rotate(0.5, False)
-        self.move(60, 90)
+        self.move(59, 90)
         rospy.sleep(1)
         self.rotate(180, False)
         self.rotate(1, True)
@@ -108,10 +117,10 @@ class TiagoController:
         rospy.sleep(1)
 
     def bathroom_to_kitchen(self):
-        self.move(60, 270)
+        self.move(59, 270)
         rospy.sleep(1)
         self.rotate(90, False)
-        self.move(10, 180)
+        self.move(10, 0)
         rospy.sleep(1)
         self.rotate(90, False)
         self.rotate(1, False)
@@ -309,27 +318,30 @@ class TiagoController:
     def keyboard_callback(self, res):
         key = res.data
         if (key == Commands.go_to_kitchen.value and key is not self.last_command):
-            self.go_to_kitchen()   
-        elif (key == Commands.go_to_A.value and key is not self.last_command):
+            self.go_to_kitchen()
+        elif (key == Commands.go_to_entrance_from_kitchen.value and (RobotPose[0]==37 and RobotPose[1]==8) and key is not self.last_command):
+            self.go_to_entrance()
+        elif (key == Commands.go_to_A.value and (RobotPose[0]==37 and RobotPose[1]==8) and key is not self.last_command):
             self.kitchen_to_A()
-            self.serve_dx()
-        elif (key == Commands.go_to_B.value and key is not self.last_command):
+            self.serve()
+        elif (key == Commands.go_to_B.value and (RobotPose[0]==37 and RobotPose[1]==8) and key is not self.last_command):
             self.kitchen_to_B()
-            self.serve_dx()
-        elif (key == Commands.go_to_C.value and key is not self.last_command):
+            self.serve()
+        elif (key == Commands.go_to_C.value and (RobotPose[0]==37 and RobotPose[1]==8) and key is not self.last_command):
             self.kitchen_to_C()
-            self.serve_dx()
-        elif (key == Commands.go_to_D.value and key is not self.last_command):
+            self.serve()
+        elif (key == Commands.go_to_D.value and (RobotPose[0]==37 and RobotPose[1]==8) and key is not self.last_command):
             self.kitchen_to_payment()
-            self.serve_dx()
-        elif (key == Commands.go_to_E.value and key is not self.last_command):
+            self.serve()
+        elif (key == Commands.go_to_E.value and (RobotPose[0]==37 and RobotPose[1]==8) and key is not self.last_command):
             self.kitchen_to_E()
-            self.serve_dx()
-        elif (key == Commands.go_to_F.value and key is not self.last_command):
+            self.serve()
+        elif (key == Commands.go_to_F.value and (RobotPose[0]==37 and RobotPose[1]==8) and key is not self.last_command):
             self.kitchen_to_F()
-            self.serve_dx()  
-        elif (key == Commands.go_to_toilet.value and key is not self.last_command):
-            self.kitchen_to_bathroom()  
+            self.serve()  
+        elif (key == Commands.go_to_toilet.value and (RobotPose[0]==37 and RobotPose[1]==8) and key is not self.last_command):
+            self.kitchen_to_bathroom()
+
         elif (key == Commands.go_to_kitchen_from_A.value and key is not self.last_command):
             self.A_to_kitchen()
         elif (key == Commands.go_to_kitchen_from_B.value and key is not self.last_command):
@@ -341,7 +353,30 @@ class TiagoController:
         elif (key == Commands.go_to_kitchen_from_E.value and key is not self.last_command):
             self.E_to_kitchen() 
         elif (key == Commands.go_to_kitchen_from_F.value and key is not self.last_command):
-            self.F_to_kitchen()     
+            self.F_to_kitchen()  
+        elif (key == Commands.go_up.value and key is not self.last_command):
+            self.service_set_motor_velocity_left.call(2)
+            self.service_set_motor_velocity_right.call(2)
+            self.service_set_motor_position_left.call(float('+inf'))
+            self.service_set_motor_position_right.call(float('+inf')) 
+        elif (key == Commands.turn_left.value and key is not self.last_command):
+            self.service_set_motor_velocity_left.call(1)
+            self.service_set_motor_velocity_right.call(-1)
+            self.service_set_motor_position_left.call(float('+inf'))
+            self.service_set_motor_position_right.call(float('+inf')) 
+        elif (key == Commands.turn_right.value and key is not self.last_command):
+            self.service_set_motor_velocity_left.call(-1)
+            self.service_set_motor_velocity_right.call(1)
+            self.service_set_motor_position_left.call(float('+inf'))
+            self.service_set_motor_position_right.call(float('+inf'))
+        elif(key == Commands.go_down.value and key is not self.last_command):
+            self.service_set_motor_velocity_left.call(-2)
+            self.service_set_motor_velocity_right.call(-2)
+            self.service_set_motor_position_left.call(float('+inf'))
+            self.service_set_motor_position_right.call(float('+inf'))
+        elif (key == Commands.stop.value  and key is not self.last_command):
+            self.service_set_motor_velocity_left.call(0)
+            self.service_set_motor_velocity_right.call(0)
         elif (key == Commands.go_to_kitchen_from_toilet.value and key is not self.last_command):
             self.bathroom_to_kitchen()             
         self.last_command = res.data
@@ -442,15 +477,7 @@ class TiagoController:
             isBumped=False
         
 
-    def serve_dx(self):
-        self.service_set_torso_position(0.2)
-        rospy.sleep(5)
-        self.service_set_torso_position(0)
-        rospy.sleep(5)
-
-    def serve_sx(self):
-        self.rotate(90,True)
-        rospy.sleep(1)
+    def serve(self):
         self.service_set_torso_position(0.2)
         rospy.sleep(5)
         self.service_set_torso_position(0)
