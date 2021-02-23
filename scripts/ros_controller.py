@@ -457,7 +457,7 @@ class TiagoController:
         y=y0
         vel_msg.linear.x = 0
         vel_msg.linear.y = 0
-        vel_msg.linear.z = 0 #dovremmo mandare z angolare a 0 
+        vel_msg.linear.z = 0 
         self.service_set_motor_velocity_left.call(0)
         self.service_set_motor_velocity_right.call(0)        
         self.velocity_publisher.publish(vel_msg)
@@ -494,7 +494,7 @@ class TiagoController:
         vel_msg.angular.y = 0
         vel_msg.angular.z = 1
 
-        # distanza che devono percorrere le ruote per compiere 90 gradi = 3.48 calcolato sperimentalmente
+        # distanza che devono percorrere le ruote per compiere 90 gradi calcolato sperimentalmente
         distance_not_clockwise_90 = 3.53
         distance_not_clockwise = 0
         distance_clockwise_90 = 3.503
