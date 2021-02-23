@@ -38,7 +38,7 @@ class TiagoController:
         # value.ranges // 667 elements
         front_distance = min(value.ranges[278:388])
 
-        if(front_distance < 0.3):
+        if(front_distance < 0.25):
             isFree = False            
         else:    
             isFree = True
